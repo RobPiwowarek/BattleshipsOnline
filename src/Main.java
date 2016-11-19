@@ -6,6 +6,6 @@ public class Main {
     public static void main(String[] args) {
         MainMenu menu = new MainMenu();
         NetworkManager manager = new NetworkManager();
-        GameBoard board = new GameBoard(5, 5);
+        GameBoard board = new GameBoard(8, 8);
     }
 }

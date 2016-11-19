@@ -2,7 +2,6 @@ package game.graphics.ui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class GameBoard {
 
@@ -12,18 +11,21 @@ public class GameBoard {
     public GameBoard(int height, int width){
         boardFrame = new JFrame("Your Board");
         boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.addGridLayout();
-        this.boardFrame.getContentPane().setLayout(new FlowLayout());
+
+        setupLayout();
 
 
         setupPanels(height, width);
 
         boardFrame.pack();
+        boardFrame.setResizable(false);
         this.show();
     }
 
-    private void addGridLayout(){
-        boardFrame.getContentPane().setLayout(new GridLayout(1, 2));
+    private void setupLayout() {
+        FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 20, 20);
+
+        this.boardFrame.getContentPane().setLayout(layout);
     }
 
     private void setupPanels(int height, int width){
@@ -42,13 +44,11 @@ public class GameBoard {
             for (int j = 0; j < width; ++j){
 
 
-                Button field = new Button();
+                JButton field = new JButton();
                 field.setPreferredSize(new Dimension(50, 50));
                 field.setBackground(Color.lightGray);
 
                 board.add(field);
-
-
             }
         }
     }

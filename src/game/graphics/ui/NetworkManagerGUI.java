@@ -12,7 +12,6 @@ public class NetworkManagerGUI {
         this.frame = new JFrame("Connection");
         this.frame.setSize(new Dimension(175, 125));
 
-        //setupLayoutManager(new GridLayout(3,1));
         this.frame.getContentPane().setLayout(new FlowLayout());
         setupTextField("IP");
         setupTextField("Port");
