@@ -2,13 +2,11 @@ package game.graphics.board;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GameBoard {
 
     private JFrame boardFrame;
-    private JButton[][] buttons;
+    private Tile[][] tiles;
     private final int offset = 50;
 
     public GameBoard(int height, int width){
@@ -16,7 +14,6 @@ public class GameBoard {
         boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setupLayout();
-
 
         setupPanels(height, width);
 
@@ -43,12 +40,12 @@ public class GameBoard {
     }
 
     private void setupBoardFields(JPanel board, int height, int width){
-        buttons = new JButton[height][width];
+        tiles = new Tile[height][width];
 
         for (int i = 0; i < height; ++i){
             for (int j = 0; j < width; ++j){
 
-                final JButton field = new JButton();
+                Tile field = new Tile();
                 field.setPreferredSize(new Dimension(50, 50));
                 field.setBackground(Color.lightGray);
 
@@ -67,7 +64,7 @@ public class GameBoard {
                 });
                 */
 
-                buttons[i][j] = field;
+                tiles[i][j] = field;
                 board.add(field);
             }
         }
