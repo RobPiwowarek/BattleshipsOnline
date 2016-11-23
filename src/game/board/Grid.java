@@ -6,8 +6,6 @@ public class Grid {
     private GridElement[][] elements;
 
     public Grid() {
-        this.x = 0;
-        this.y = 0;
         elements = new GridElement[this.x][this.y];
     }
 
@@ -41,9 +39,7 @@ public class Grid {
         this.elements = g.elements;
     }
 
-    public GridElement getElement(int x, int y) {
-        return elements[x][y];
-    }
+    public GridElement getElement(int x, int y) { return elements[x][y]; }
 
     public void setElement(int x, int y, GridElement g) {
         this.elements[x][y] = g;

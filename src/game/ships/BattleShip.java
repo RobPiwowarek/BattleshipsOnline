@@ -1,25 +1,14 @@
 package game.ships;
 
 public class BattleShip {
-    private Size size;
-    private Position position;
+    private ShipAngle angle;
+    private ShipType type;
     private int health;
 
-    public BattleShip(Size size, Position position) {
-        this.size = size;
-        this.position = position;
-    }
-
-    public Size getSize() {
-        return this.size;
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public int getHealth() {
-        return this.health;
+    public BattleShip(ShipType type, ShipAngle angle) {
+        this.type = type;
+        this.angle = angle;
+        this.health = type.getLength();
     }
 
     public void takeDamage() {
@@ -28,5 +17,27 @@ public class BattleShip {
         }
     }
 
+    public ShipAngle getAngle() {
+        return angle;
+    }
 
+    public void setAngle(ShipAngle angle) {
+        this.angle = angle;
+    }
+
+    public ShipType getType() {
+        return type;
+    }
+
+    public void setType(ShipType type) {
+        this.type = type;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getHealth() {
+        return this.health;
+    }
 }

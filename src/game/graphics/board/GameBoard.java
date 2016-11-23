@@ -1,11 +1,14 @@
-package game.graphics.ui;
+package game.graphics.board;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameBoard {
 
     private JFrame boardFrame;
+    private JButton[][] buttons;
     private final int offset = 50;
 
     public GameBoard(int height, int width){
@@ -40,14 +43,31 @@ public class GameBoard {
     }
 
     private void setupBoardFields(JPanel board, int height, int width){
+        buttons = new JButton[height][width];
+
         for (int i = 0; i < height; ++i){
             for (int j = 0; j < width; ++j){
 
-
-                JButton field = new JButton();
+                final JButton field = new JButton();
                 field.setPreferredSize(new Dimension(50, 50));
                 field.setBackground(Color.lightGray);
 
+                /*
+                field.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (field.getIcon() == null){
+                            ImageIcon icon = new ImageIcon("ship_element_placeholder.png");
+                            field.setIcon(icon);
+                        }
+                        else {
+                            field.setIcon(null);
+                        }
+                    }
+                });
+                */
+
+                buttons[i][j] = field;
                 board.add(field);
             }
         }

@@ -1,4 +1,4 @@
-import game.graphics.ui.GameBoard;
+import game.graphics.board.GameBoard;
 import game.graphics.ui.MainMenu;
 import network.NetworkManager;
 
