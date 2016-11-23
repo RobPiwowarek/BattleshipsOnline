@@ -82,7 +82,7 @@ public class MainMenu {
     }
 
     private void setupLogo(JPanel panel) {
-        panel.add(new JLabel(new ImageIcon(new ImageIcon("logo.png").getImage().getScaledInstance(800, 120, Image.SCALE_SMOOTH))));
+        panel.add(new JLabel(new ImageIcon(new ImageIcon("src/resources/images/logo.png").getImage().getScaledInstance(800, 120, Image.SCALE_SMOOTH))));
     }
 
     private void setupMenuBar() {
