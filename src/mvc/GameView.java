@@ -1,6 +1,5 @@
 package mvc;
 
-import game.Game;
 import game.graphics.board.GameBoard;
 import game.graphics.ui.MainMenu;
 import game.graphics.ui.NetworkManagerGUI;
@@ -10,22 +9,22 @@ public class GameView {
     NetworkManagerGUI netGUI;
     private GameBoard board;
     MainMenu menu;
-    Game game;
+    GameController gameController;
 
     // TODO: need to change default exit operation for UI ELEMENTS
     // so that they only hide and don't spawn additional windows.
 
-    public GameView(Game g) {
+    public GameView(GameController g) {
         board = new GameBoard(BOARD_SIDE_LENGTH, BOARD_SIDE_LENGTH);
         netGUI = new NetworkManagerGUI(this);
         menu = new MainMenu(this);
-        game = g;
+        gameController = g;
 
         menu.show();
     }
 
-    public Game getGame() {
-        return game;
+    public GameController getGameController() {
+        return gameController;
     }
 
     public GameBoard getBoard() {

@@ -16,5 +16,8 @@ public class NetworkManager {
 
     }
 
+    public void connect(){
+
+    }
 
 }

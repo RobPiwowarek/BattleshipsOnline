@@ -1,11 +1,13 @@
 package mvc;
 
-import game.Game;
-
 public class GameController {
-    Game game;
+    GameModel gameModel;
 
-    public GameController(Game g) {
-        game = g;
+    public void startGame(){
+        gameModel.startGame();
+    }
+
+    public GameController(GameModel g) {
+        gameModel = g;
     }
 }

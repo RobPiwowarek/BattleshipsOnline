@@ -121,7 +121,7 @@ public class MainMenu {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Start FileMenu Item pressed");
 
-                gameView.getGame().startGame();
+                gameView.getGameController().startGame();
             }
         });
 

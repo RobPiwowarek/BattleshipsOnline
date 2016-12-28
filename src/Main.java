@@ -1,7 +1,7 @@
-import game.Game;
+import mvc.GameModel;
 
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game();
+        GameModel gameModel = new GameModel();
     }
 }
