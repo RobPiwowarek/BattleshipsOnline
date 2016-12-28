@@ -1,5 +1,7 @@
 package game.graphics.ui;
 
+import mvc.GameView;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,11 +10,14 @@ import java.awt.event.ActionListener;
 public class MainMenu {
 
     private final JFrame menuFrame;
+    private GameView gameView;
 
-    public MainMenu(){
-        this.menuFrame = new JFrame("Main menu");
+    public MainMenu(GameView view) {
+        gameView = view;
 
-        this.menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame = new JFrame("Main menu");
+
+        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setupLayoutManager();
 
@@ -21,8 +26,6 @@ public class MainMenu {
         menuFrame.pack();
 
         menuFrame.setResizable(false);
-
-        menuFrame.setVisible(true);
     }
 
     private void setupLayoutManager() {
@@ -30,9 +33,17 @@ public class MainMenu {
         layout.setVgap(10);
         layout.setHgap(10);
 
-        this.menuFrame.getContentPane().setLayout(layout);
+        menuFrame.getContentPane().setLayout(layout);
 
-        this.menuFrame.getContentPane().add(setupLogoPanel());
+        menuFrame.getContentPane().add(setupLogoPanel());
+    }
+
+    public void show() {
+        menuFrame.setVisible(true);
+    }
+
+    public void hide() {
+        menuFrame.setVisible(false);
     }
 
     private JPanel setupLogoPanel() {
@@ -93,21 +104,41 @@ public class MainMenu {
         this.menuFrame.setJMenuBar(menuBar);
     }
 
-    private JMenu createFileMenu(){
+    private JMenu createFileMenu() {
         final JMenu fileMenu = new JMenu("File");
 
-        final JMenuItem start = new JMenuItem("Start");
+        fileMenu.add(createStartItem());
+        fileMenu.add(createConnectItem());
+
+        return fileMenu;
+    }
+
+    private JMenuItem createStartItem(){
+        JMenuItem start = new JMenuItem("Start");
 
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Start pressed");
+                System.out.println("Start FileMenu Item pressed");
 
+                gameView.getGame().startGame();
             }
         });
 
-        fileMenu.add(start);
+        return start;
+    }
 
-        return fileMenu;
+    private JMenuItem createConnectItem(){
+        JMenuItem connect = new JMenuItem("Connect");
+
+        connect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Connect pressed");
+                gameView.getNetGUI().show();
+            }
+        });
+
+        return connect;
     }
 }

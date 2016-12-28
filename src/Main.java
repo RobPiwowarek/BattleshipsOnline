@@ -1,11 +1,7 @@
-import game.graphics.board.GameBoard;
-import game.graphics.ui.MainMenu;
-import network.NetworkManager;
+import game.Game;
 
 public class Main {
     public static void main(String[] args) {
-        MainMenu menu = new MainMenu();
-        NetworkManager manager = new NetworkManager();
-        GameBoard board = new GameBoard(8, 8);
+        Game game = new Game();
     }
 }

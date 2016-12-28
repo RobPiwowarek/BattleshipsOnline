@@ -20,7 +20,7 @@ public class GridElement {
 
         this.marked = true;
 
-        if (this.ship != null){
+        if (this.ship != null) {
             ship.takeDamage();
         }
     }

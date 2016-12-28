@@ -39,7 +39,9 @@ public class Grid {
         this.elements = g.elements;
     }
 
-    public GridElement getElement(int x, int y) { return elements[x][y]; }
+    public GridElement getElement(int x, int y) {
+        return elements[x][y];
+    }
 
     public void setElement(int x, int y, GridElement g) {
         this.elements[x][y] = g;

@@ -5,11 +5,11 @@ import java.awt.*;
 
 public class GameBoard {
 
+    private final int offset = 50;
     private JFrame boardFrame;
     private Tile[][] tiles;
-    private final int offset = 50;
 
-    public GameBoard(int height, int width){
+    public GameBoard(int height, int width) {
         boardFrame = new JFrame("Your Board");
         boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -19,7 +19,6 @@ public class GameBoard {
 
         boardFrame.pack();
         boardFrame.setResizable(false);
-        this.show();
     }
 
     private void setupLayout() {
@@ -28,7 +27,7 @@ public class GameBoard {
         this.boardFrame.getContentPane().setLayout(layout);
     }
 
-    private void setupPanels(int height, int width){
+    private void setupPanels(int height, int width) {
         JPanel myBoard = new JPanel(new GridLayout(height, width));
         JPanel opponentBoard = new JPanel(new GridLayout(height, width));
 
@@ -39,11 +38,11 @@ public class GameBoard {
         setupBoardFields(opponentBoard, height, width);
     }
 
-    private void setupBoardFields(JPanel board, int height, int width){
+    private void setupBoardFields(JPanel board, int height, int width) {
         tiles = new Tile[height][width];
 
-        for (int i = 0; i < height; ++i){
-            for (int j = 0; j < width; ++j){
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
 
                 Tile field = new Tile();
                 field.setPreferredSize(new Dimension(50, 50));
@@ -70,11 +69,11 @@ public class GameBoard {
         }
     }
 
-    public void show(){
+    public void show() {
         boardFrame.setVisible(true);
     }
 
-    public void hide(){
+    public void hide() {
         boardFrame.setVisible(false);
     }
 

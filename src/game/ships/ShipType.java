@@ -8,7 +8,7 @@ public enum ShipType {
 
     private final int length;
 
-    ShipType(int size){
+    ShipType(int size) {
         this.length = size;
     }
 

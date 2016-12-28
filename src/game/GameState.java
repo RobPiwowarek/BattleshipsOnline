@@ -2,6 +2,6 @@ package game;
 
 public enum GameState {
     MENU,
-    START,
-    MATCH,
+    START, // placement
+    MATCH, // game in play
 }

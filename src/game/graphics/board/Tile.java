@@ -16,11 +16,11 @@ public class Tile extends JButton implements MouseListener {
         this.currentIcon = currentIcon;
     }
 
-    public void displayCurrentIcon(){
+    public void displayCurrentIcon() {
         this.setIcon(currentIcon);
     }
 
-    public void hideCurrentIcon(){
+    public void hideCurrentIcon() {
         this.setIcon(null);
     }
 
