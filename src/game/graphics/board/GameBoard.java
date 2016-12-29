@@ -1,15 +1,19 @@
 package game.graphics.board;
 
+import mvc.GameView;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class GameBoard {
 
-    private final int offset = 50;
     private JFrame boardFrame;
     private Tile[][] tiles;
+    private GameView gameView;
 
-    public GameBoard(int height, int width) {
+    public GameBoard(int height, int width, GameView view) {
+        gameView = view;
+
         boardFrame = new JFrame("Your Board");
         boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -44,24 +48,9 @@ public class GameBoard {
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
 
-                Tile field = new Tile();
+                Tile field = new Tile(gameView, i, j);
                 field.setPreferredSize(new Dimension(50, 50));
                 field.setBackground(Color.lightGray);
-
-                /*
-                field.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (field.getIcon() == null){
-                            ImageIcon icon = new ImageIcon("ship_element_placeholder.png");
-                            field.setIcon(icon);
-                        }
-                        else {
-                            field.setIcon(null);
-                        }
-                    }
-                });
-                */
 
                 tiles[i][j] = field;
                 board.add(field);
@@ -76,6 +65,5 @@ public class GameBoard {
     public void hide() {
         boardFrame.setVisible(false);
     }
-
 
 }

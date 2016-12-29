@@ -3,7 +3,7 @@ package game.board;
 import exception.AlreadyMarkedException;
 import game.ships.BattleShip;
 
-public class GridElement {
+class GridElement {
     private boolean marked = false;
     private BattleShip ship;
 
@@ -23,6 +23,14 @@ public class GridElement {
         if (this.ship != null) {
             ship.takeDamage();
         }
+    }
+
+    public BattleShip getShip() {
+        return ship;
+    }
+
+    public void setShip(BattleShip ship) {
+        this.ship = ship;
     }
 
     public boolean isMarked() {

@@ -14,8 +14,8 @@ public class GameView {
     // TODO: need to change default exit operation for UI ELEMENTS
     // so that they only hide and don't spawn additional windows.
 
-    public GameView(GameController g) {
-        board = new GameBoard(BOARD_SIDE_LENGTH, BOARD_SIDE_LENGTH);
+    GameView(GameController g) {
+        board = new GameBoard(BOARD_SIDE_LENGTH, BOARD_SIDE_LENGTH, this);
         netGUI = new NetworkManagerGUI(this);
         menu = new MainMenu(this);
         gameController = g;

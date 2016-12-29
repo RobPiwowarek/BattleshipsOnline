@@ -1,5 +1,10 @@
 package game.board;
 
+import exception.GridOutOfBoundsException;
+import exception.IncorrectGridSizeException;
+import game.ships.ShipAngle;
+import game.ships.ShipType;
+
 public class Grid {
     private int x;
     private int y;
@@ -15,28 +20,43 @@ public class Grid {
         this.elements = new GridElement[x][y];
     }
 
-    public Grid(int size) {
+    public Grid(int size) throws IncorrectGridSizeException {
         this.x = size;
         this.y = size;
+
+        if (size < 0) throw new IncorrectGridSizeException("given size < 0");
+
         elements = new GridElement[size][size];
     }
 
-    public Grid(GridElement[][] e) {
+    public Grid(GridElement[][] e) throws IncorrectGridSizeException {
         this.elements = e;
 
-        // TODO: check for GridElement[0][X]
+        // check for GridElement[0][X]
+        if (e.length == 0 || e[0].length == 0) throw new IncorrectGridSizeException("given GridElement[][] size == 0");
 
         this.x = e[0].length;
         this.y = e.length;
-
-
-        // set x, y of grid;
     }
 
     public Grid(Grid g) {
         this.x = g.x;
         this.y = g.y;
         this.elements = g.elements;
+    }
+
+    public boolean addShip(ShipType shipType, ShipAngle angle, int x, int y) throws GridOutOfBoundsException {
+        if (x > this.x || x < 0 || y > this.y || y < 0){
+            throw new GridOutOfBoundsException("Incorrect coordinates");
+        }
+
+        // TODO: (can place horizontally/vertically) then place then update visually
+        switch(angle){
+            case HORIZONTAL: break;
+            case VERTICAL: break;
+        }
+
+        return true;
     }
 
     public GridElement getElement(int x, int y) {
