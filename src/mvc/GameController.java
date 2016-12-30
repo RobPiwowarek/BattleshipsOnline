@@ -18,8 +18,8 @@ public class GameController {
         return gameModel.isPlayerTurn();
     }
 
-    public void addShip(int x, int y, ShipAngle angle){
-        gameModel.addShip(x, y, angle);
+    public void addShip(int x, int y, ShipAngle angle, boolean isEnemy){
+        gameModel.addShip(x, y, angle, isEnemy);
     }
 
     public GameController(GameModel g) {

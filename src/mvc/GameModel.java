@@ -16,11 +16,12 @@ public class GameModel {
     private int score = 0;
     private boolean playerTurn = false;
 
+    // TODO: gameView and Controller should be initialised outside GameModel
     public GameModel() {
         gameController = new GameController(this);
         gameView = new GameView(gameController);
 
-        grid = new Grid(GameView.BOARD_SIDE_LENGTH, GameView.BOARD_SIDE_LENGTH);
+        grid = new Grid(GameView.BOARD_SIDE_LENGTH, GameView.BOARD_SIDE_LENGTH, gameView);
 
         gameState = GameState.MENU;
     }
@@ -57,13 +58,21 @@ public class GameModel {
         return playerTurn;
     }
 
+    public boolean changeTurn(){
+        playerTurn = !playerTurn;
+        return playerTurn;
+    }
+
     public void setPlayerTurn(boolean playerTurn) {
         this.playerTurn = playerTurn;
     }
 
-    public boolean addShip(int x, int y, ShipAngle angle){
+    public boolean addShip(int x, int y, ShipAngle angle, boolean isEnemy){
         try {
-            return grid.addShip(chooseShip(), angle, x, y);
+            boolean success = grid.addShip(chooseShip(), angle, x, y, isEnemy);
+            if (success) --shipToAdd;
+
+            return success;
         }
         catch (Exception e){
             e.printStackTrace();
@@ -74,8 +83,8 @@ public class GameModel {
 
     private ShipType chooseShip() throws IncorrectShipTypeException {
         switch(shipToAdd){
-            case 5: return ShipType.BATTLESHIP;
-            case 4: return ShipType.CARRIER;
+            case 5: return ShipType.CARRIER;
+            case 4: return ShipType.BATTLESHIP;
             case 3: return ShipType.CRUISER;
             case 2:
             case 1: return ShipType.DESTROYER;
@@ -89,6 +98,8 @@ public class GameModel {
 
 
         gameState = GameState.START;
+
+        playerTurn = true;
 
         gameView.getBoard().show();
     }

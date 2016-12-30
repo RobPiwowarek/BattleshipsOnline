@@ -23,6 +23,12 @@ public class GameView {
         menu.show();
     }
 
+    public void damageShip(int x, int y, boolean isEnemy) { board.damageShip(x, y, isEnemy); }
+
+    public void showShip(int x, int y, boolean isEnemy) { board.displayShip(x, y, isEnemy);}
+
+    public void hideShip(int x, int y, boolean isEnemy) { board.hideShip(x, y, isEnemy);}
+
     public GameController getGameController() {
         return gameController;
     }

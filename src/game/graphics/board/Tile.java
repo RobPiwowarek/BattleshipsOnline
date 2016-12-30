@@ -5,6 +5,7 @@ import game.ships.ShipAngle;
 import mvc.GameView;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -19,11 +20,32 @@ class Tile extends JButton implements MouseListener {
     Tile(GameView view, int x, int y) {
         super();
 
+        addMouseListener(this);
+
         this.x = x;
         this.y = y;
 
         gameView = view;
     }
+
+    public void showEnemyShip(){
+        this.setBackground(Color.blue);
+    }
+
+    public void showShip(){
+        this.setBackground(Color.black);
+    }
+
+    // TODO: check if correct way to remove colour
+    public void hideShip(){
+        this.setBackground(null);
+    }
+
+    public void destroyShip(){
+        this.setBackground(Color.red);
+    }
+
+    // Alternatively can be done with icons
 
     public ImageIcon getCurrentIcon() {
         return currentIcon;
@@ -44,13 +66,15 @@ class Tile extends JButton implements MouseListener {
     // TODO: block if not your turn or something.
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println("CLICKED");
+
         if (gameView.getGameController().isPlayerTurn()) {
             switch (gameView.getGameController().getCurrentState()) {
                 case START:
                     if (SwingUtilities.isRightMouseButton(e)) {
-                        gameView.getGameController().addShip(x, y, ShipAngle.HORIZONTAL);
+                        gameView.getGameController().addShip(x, y, ShipAngle.HORIZONTAL, false);
                     } else {
-                        gameView.getGameController().addShip(x, y, ShipAngle.VERTICAL);
+                        gameView.getGameController().addShip(x, y, ShipAngle.VERTICAL, false);
                     }
                     break;
 
