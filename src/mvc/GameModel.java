@@ -1,6 +1,5 @@
 package mvc;
 
-import exception.GridOutOfBoundsException;
 import exception.IncorrectShipTypeException;
 import game.GameState;
 import game.board.Grid;
@@ -58,23 +57,22 @@ public class GameModel {
         return playerTurn;
     }
 
-    public boolean changeTurn(){
-        playerTurn = !playerTurn;
-        return playerTurn;
-    }
-
     public void setPlayerTurn(boolean playerTurn) {
         this.playerTurn = playerTurn;
     }
 
-    public boolean addShip(int x, int y, ShipAngle angle, boolean isEnemy){
+    public boolean changeTurn() {
+        playerTurn = !playerTurn;
+        return playerTurn;
+    }
+
+    public boolean addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
         try {
             boolean success = grid.addShip(chooseShip(), angle, x, y, isEnemy);
             if (success) --shipToAdd;
 
             return success;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -82,13 +80,18 @@ public class GameModel {
     }
 
     private ShipType chooseShip() throws IncorrectShipTypeException {
-        switch(shipToAdd){
-            case 5: return ShipType.CARRIER;
-            case 4: return ShipType.BATTLESHIP;
-            case 3: return ShipType.CRUISER;
+        switch (shipToAdd) {
+            case 5:
+                return ShipType.CARRIER;
+            case 4:
+                return ShipType.BATTLESHIP;
+            case 3:
+                return ShipType.CRUISER;
             case 2:
-            case 1: return ShipType.DESTROYER;
-            default: throw new IncorrectShipTypeException("shipToAdd has different value than {5, 4, 3, 2, 1} ");
+            case 1:
+                return ShipType.DESTROYER;
+            default:
+                throw new IncorrectShipTypeException("shipToAdd has different value than {5, 4, 3, 2, 1} ");
         }
     }
 

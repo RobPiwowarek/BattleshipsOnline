@@ -113,7 +113,7 @@ public class MainMenu {
         return fileMenu;
     }
 
-    private JMenuItem createStartItem(){
+    private JMenuItem createStartItem() {
         JMenuItem start = new JMenuItem("Start");
 
         start.addActionListener(new ActionListener() {
@@ -128,7 +128,7 @@ public class MainMenu {
         return start;
     }
 
-    private JMenuItem createConnectItem(){
+    private JMenuItem createConnectItem() {
         JMenuItem connect = new JMenuItem("Connect");
 
         connect.addActionListener(new ActionListener() {

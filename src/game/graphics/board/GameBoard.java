@@ -66,21 +66,21 @@ public class GameBoard {
         }
     }
 
-    public void displayShip(int x, int y, boolean isEnemy){
+    public void displayShip(int x, int y, boolean isEnemy) {
         if (isEnemy)
             enemyTiles[y][x].showShip();
         else
             myTiles[y][x].showShip();
     }
 
-    public void hideShip(int x, int y, boolean isEnemy){
+    public void hideShip(int x, int y, boolean isEnemy) {
         if (isEnemy)
             enemyTiles[y][x].hideShip();
         else
             myTiles[y][x].hideShip();
     }
 
-    public void damageShip(int x, int y, boolean isEnemy){
+    public void damageShip(int x, int y, boolean isEnemy) {
         if (isEnemy)
             enemyTiles[y][x].destroyShip();
         else

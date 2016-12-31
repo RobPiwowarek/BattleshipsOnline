@@ -1,6 +1,5 @@
 package game.graphics.board;
 
-import game.GameState;
 import game.ships.ShipAngle;
 import mvc.GameView;
 
@@ -28,20 +27,20 @@ class Tile extends JButton implements MouseListener {
         gameView = view;
     }
 
-    public void showEnemyShip(){
+    public void showEnemyShip() {
         this.setBackground(Color.blue);
     }
 
-    public void showShip(){
+    public void showShip() {
         this.setBackground(Color.black);
     }
 
     // TODO: check if correct way to remove colour
-    public void hideShip(){
+    public void hideShip() {
         this.setBackground(null);
     }
 
-    public void destroyShip(){
+    public void destroyShip() {
         this.setBackground(Color.red);
     }
 
@@ -86,7 +85,7 @@ class Tile extends JButton implements MouseListener {
                 default:
             }
         }
-}
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
