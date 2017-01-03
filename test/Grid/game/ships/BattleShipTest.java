@@ -11,7 +11,6 @@ public class BattleShipTest {
     public void takeDamage() throws Exception {
         ship = new BattleShip(ShipType.BATTLESHIP, ShipAngle.HORIZONTAL);
 
-
         for (int i = 0; i < ship.getType().getLength(); ++i) {
             assertEquals(ship.getHealth(), ship.getType().getLength() - i);
             ship.takeDamage();

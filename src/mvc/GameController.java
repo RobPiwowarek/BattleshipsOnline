@@ -2,10 +2,16 @@ package mvc;
 
 import game.GameState;
 import game.ships.ShipAngle;
+import network.NetworkManager;
 
 public class GameController {
     GameModel gameModel;
+    NetworkManager networkManager;
     GameView gameView;
+
+    public void createNetworkManager(int port, String ip, boolean isHost){
+        networkManager = new NetworkManager(port, ip, isHost);
+    }
 
     public GameController(GameModel g) {
         gameModel = g;
