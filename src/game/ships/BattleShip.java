@@ -21,23 +21,12 @@ public class BattleShip {
         return angle;
     }
 
-    public void setAngle(ShipAngle angle) {
-        this.angle = angle;
-    }
-
     public ShipType getType() {
         return type;
-    }
-
-    public void setType(ShipType type) {
-        this.type = type;
     }
 
     public int getHealth() {
         return this.health;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
 }

@@ -1,5 +1,6 @@
 package mvc;
 
+import exception.IncorrectGridSizeException;
 import exception.IncorrectShipTypeException;
 import game.GameState;
 import game.board.Grid;
@@ -15,7 +16,7 @@ public class GameModel {
     private boolean playerTurn = false;
 
     // TODO: gameView and Controller should be initialised outside GameModel
-    public GameModel() {
+    public GameModel() throws IncorrectGridSizeException{
         grid = new Grid(GameView.BOARD_SIDE_LENGTH, GameView.BOARD_SIDE_LENGTH);
 
         gameState = GameState.MENU;

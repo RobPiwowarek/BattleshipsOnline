@@ -13,23 +13,22 @@ public class Grid {
     private GridElement[][] elements;
     private GameView gameView;
 
-    public Grid() {
-        elements = new GridElement[0][0];
-        initGrid();
-    }
+    public Grid(int x, int y) throws IncorrectGridSizeException{
+        if (x < 0) throw new IncorrectGridSizeException("x < 0");
 
-    public Grid(int x, int y) {
+        if (y < 0) throw new IncorrectGridSizeException("y < 0");
+
         this.x = x;
         this.y = y;
-        this.elements = new GridElement[x][y];
+        this.elements = new GridElement[y][x];
         initGrid();
     }
 
     public Grid(int size) throws IncorrectGridSizeException {
+        if (size < 0) throw new IncorrectGridSizeException("given size < 0");
+
         this.x = size;
         this.y = size;
-
-        if (size < 0) throw new IncorrectGridSizeException("given size < 0");
 
         elements = new GridElement[size][size];
         initGrid();
@@ -51,27 +50,25 @@ public class Grid {
         this.elements = g.elements;
     }
 
-    public boolean addShip(ShipType shipType, ShipAngle angle, int x, int y, boolean isEnemy) throws GridOutOfBoundsException {
+    public boolean addShip(BattleShip ship, int x, int y, boolean isEnemy) throws GridOutOfBoundsException{
         if (x > this.x || x < 0 || y > this.y || y < 0) {
             throw new GridOutOfBoundsException("Incorrect coordinates");
         }
 
-        switch (angle) {
+        switch (ship.getAngle()) {
             case HORIZONTAL:
-                if (isPlaceableHorizontally(x, y, shipType.getLength())) {
-                    BattleShip ship = new BattleShip(shipType, angle);
+                if (isPlaceableHorizontally(x, y, ship.getType().getLength())) {
 
-                    for (int i = 0; i < shipType.getLength(); ++i) {
+                    for (int i = 0; i < ship.getType().getLength(); ++i) {
                         elements[y][x + i].setShip(ship);
                     }
                 } else return false;
 
                 break;
             case VERTICAL:
-                if (isPlaceableVertically(x, y, shipType.getLength())) {
-                    BattleShip ship = new BattleShip(shipType, angle);
+                if (isPlaceableVertically(x, y, ship.getType().getLength())) {
 
-                    for (int i = 0; i < shipType.getLength(); ++i) {
+                    for (int i = 0; i < ship.getType().getLength(); ++i) {
                         elements[y + i][x].setShip(ship);
                     }
                 } else return false;
@@ -79,6 +76,12 @@ public class Grid {
                 break;
         }
         return true;
+    }
+
+    public boolean addShip(ShipType shipType, ShipAngle angle, int x, int y, boolean isEnemy) throws GridOutOfBoundsException {
+        BattleShip ship = new BattleShip(shipType, angle);
+
+        return addShip(ship, x, y, isEnemy);
     }
 
     private boolean isPlaceableHorizontally(int x, int y, int length) {
