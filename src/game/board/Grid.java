@@ -13,17 +13,15 @@ public class Grid {
     private GridElement[][] elements;
     private GameView gameView;
 
-    public Grid(GameView gameView) {
-        this.gameView = gameView;
+    public Grid() {
         elements = new GridElement[0][0];
         initGrid();
     }
 
-    public Grid(int x, int y, GameView gameView) {
+    public Grid(int x, int y) {
         this.x = x;
         this.y = y;
         this.elements = new GridElement[x][y];
-        this.gameView = gameView;
         initGrid();
     }
 
@@ -57,7 +55,7 @@ public class Grid {
         if (x > this.x || x < 0 || y > this.y || y < 0) {
             throw new GridOutOfBoundsException("Incorrect coordinates");
         }
-        // TODO: update visually
+
         switch (angle) {
             case HORIZONTAL:
                 if (isPlaceableHorizontally(x, y, shipType.getLength())) {
@@ -65,7 +63,6 @@ public class Grid {
 
                     for (int i = 0; i < shipType.getLength(); ++i) {
                         elements[y][x + i].setShip(ship);
-                        gameView.showShip(x + i, y, isEnemy);
                     }
                 } else return false;
 
@@ -76,7 +73,6 @@ public class Grid {
 
                     for (int i = 0; i < shipType.getLength(); ++i) {
                         elements[y + i][x].setShip(ship);
-                        gameView.showShip(x, y + i, isEnemy);
                     }
                 } else return false;
 

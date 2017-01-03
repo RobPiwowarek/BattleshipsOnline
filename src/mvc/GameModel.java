@@ -9,7 +9,6 @@ import game.ships.ShipType;
 public class GameModel {
     private GameState gameState;
     private GameController gameController;
-    private GameView gameView;
     private Grid grid;
     private int shipToAdd = 5;
     private int score = 0;
@@ -17,10 +16,7 @@ public class GameModel {
 
     // TODO: gameView and Controller should be initialised outside GameModel
     public GameModel() {
-        gameController = new GameController(this);
-        gameView = new GameView(gameController);
-
-        grid = new Grid(GameView.BOARD_SIDE_LENGTH, GameView.BOARD_SIDE_LENGTH, gameView);
+        grid = new Grid(GameView.BOARD_SIDE_LENGTH, GameView.BOARD_SIDE_LENGTH);
 
         gameState = GameState.MENU;
     }
@@ -29,16 +25,16 @@ public class GameModel {
         return gameController;
     }
 
-    public GameView getGameView() {
-        return gameView;
-    }
-
     public GameModel getGameModel() {
         return this;
     }
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
     }
 
     public void setGameState(GameState gameState) {
@@ -66,17 +62,23 @@ public class GameModel {
         return playerTurn;
     }
 
-    public boolean addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
+    public int addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
         try {
-            boolean success = grid.addShip(chooseShip(), angle, x, y, isEnemy);
-            if (success) --shipToAdd;
+            ShipType shipType = chooseShip();
+            boolean success = grid.addShip(shipType, angle, x, y, isEnemy);
+            if (success) {
+                --shipToAdd;
+                if(shipToAdd == 0) gameState = GameState.WAITING;
+                // TODO: powiadom drugiego gracza ze pierwszy jest gotowy
 
-            return success;
+                return shipType.getLength();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return false;
+        return 0;
     }
 
     private ShipType chooseShip() throws IncorrectShipTypeException {
@@ -103,8 +105,6 @@ public class GameModel {
         gameState = GameState.START;
 
         playerTurn = true;
-
-        gameView.getBoard().show();
     }
 
 }

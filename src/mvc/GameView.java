@@ -5,7 +5,7 @@ import game.graphics.ui.MainMenu;
 import game.graphics.ui.NetworkManagerGUI;
 
 public class GameView {
-    public final static int BOARD_SIDE_LENGTH = 8;
+    public final static int BOARD_SIDE_LENGTH = 10;
     NetworkManagerGUI netGUI;
     MainMenu menu;
     GameController gameController;
