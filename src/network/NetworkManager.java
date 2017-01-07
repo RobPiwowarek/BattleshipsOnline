@@ -1,86 +1,103 @@
 package network;
 
-import java.io.BufferedReader;
+import mvc.GameController;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class NetworkManager {
-    private int port;
+    private static GameController gameController;
     boolean isConnected = false;
+    private int port;
     private String IP;
     private boolean isServer;
+    private MessageServer messageServer;
 
-    public NetworkManager(int port, String IP, boolean isServer) {
+    public NetworkManager(int port, String IP, boolean isServer, GameController controller) {
         this.port = port;
         this.IP = IP;
         this.isServer = isServer;
+        this.gameController = controller;
     }
 
     public boolean isConnected() {
         return isConnected;
     }
 
-    public void connect() throws Exception {
-        if (isServer){
-            ServerSocket socket = new ServerSocket(port);
-            new Thread(new MessageServer(socket.accept())).start();
+    public boolean connect() {
+        try {
+            if (isServer) {
+                ServerSocket socket = new ServerSocket(port);
 
-        }else{
-            Socket socket = new Socket(IP, port);
-            new Thread(new MessageServer(socket)).start();
+                messageServer = new MessageServer(socket.accept());
+                socket.close();
+
+            } else {
+                Socket socket = new Socket(IP, port);
+
+                messageServer = new MessageServer(socket);
+            }
+        } catch (UnknownHostException e) {
+            System.err.println("Unknown host");
+            return false;
+        } catch (IOException e) {
+            System.err.println("Could not get I/O for the connection.");
+            return false;
         }
 
+        isConnected = true;
+        return true;
     }
 
-    private static class MessageServer implements Runnable{
+    public boolean sendMessage(Message message) {
+        return messageServer.sendMessage(message);
+    }
+
+    private static class MessageServer extends Thread {
         private Socket socket;
+        private ObjectOutputStream socketOut;
+        private ObjectInputStream socketIn;
 
-        public MessageServer(Socket socket){
+        public MessageServer(Socket socket) throws IOException {
             this.socket = socket;
+
+            socketOut = new ObjectOutputStream(socket.getOutputStream());
+            socketIn = new ObjectInputStream(socket.getInputStream());
         }
 
-
-
-        @Override
         public void run() {
+            Message m = null;
+
             try {
-                // Decorate the streams so we can send characters
-                // and not just bytes.  Ensure output is flushed
-                // after every newline.
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(socket.getInputStream()));
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-                // Send a welcome message to the client.
-                out.println("Connection Established");
-                out.println("Enter a line with only a period to quit\n");
-
-                // Get messages from the client, line by line; return them
-                // capitalized
-                while (true) {
-                    String input = in.readLine();
-                    if (input == null || input.equals(".")) {
-                        break;
-                    }
-                    out.println(input.toUpperCase());
+                while ((m = (Message) socketIn.readObject()) != null) {
+                    gameController.handleMessage(m);
                 }
+            } catch (IOException e) {
+                System.err.println("Could not get I/O for connection.");
+                System.exit(1);
+            } catch (ClassNotFoundException e) {
+                System.err.println("Received class not found.");
+                System.exit(2);
             }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-            finally {
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
         }
+
+        public boolean sendMessage(Message message) {
+            try {
+                socketOut.writeObject(message);
+                return true;
+
+            } catch (IOException e) {
+                System.err.println("Failed to send message over socket");
+                return false;
+            }
+        }
+
     }
 
 }
+
+

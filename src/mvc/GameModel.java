@@ -16,7 +16,7 @@ public class GameModel {
     private boolean playerTurn = false;
 
     // TODO: gameView and Controller should be initialised outside GameModel
-    public GameModel() throws IncorrectGridSizeException{
+    public GameModel() throws IncorrectGridSizeException {
         grid = new Grid(GameView.BOARD_SIDE_LENGTH, GameView.BOARD_SIDE_LENGTH);
 
         gameState = GameState.MENU;
@@ -26,16 +26,16 @@ public class GameModel {
         return gameController;
     }
 
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
     public GameModel getGameModel() {
         return this;
     }
 
     public GameState getGameState() {
         return gameState;
-    }
-
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
     }
 
     public void setGameState(GameState gameState) {
@@ -69,7 +69,7 @@ public class GameModel {
             boolean success = grid.addShip(shipType, angle, x, y, isEnemy);
             if (success) {
                 --shipToAdd;
-                if(shipToAdd == 0) gameState = GameState.WAITING;
+                if (shipToAdd == 0) gameState = GameState.WAITING;
                 // TODO: powiadom drugiego gracza ze pierwszy jest gotowy
 
                 return shipType.getLength();

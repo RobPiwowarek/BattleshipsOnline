@@ -2,6 +2,7 @@ package mvc;
 
 import game.GameState;
 import game.ships.ShipAngle;
+import network.Message;
 import network.NetworkManager;
 
 public class GameController {
@@ -9,12 +10,12 @@ public class GameController {
     NetworkManager networkManager;
     GameView gameView;
 
-    public void createNetworkManager(int port, String ip, boolean isHost){
-        networkManager = new NetworkManager(port, ip, isHost);
-    }
-
     public GameController(GameModel g) {
         gameModel = g;
+    }
+
+    public void createNetworkManager(int port, String ip, boolean isHost) {
+        networkManager = new NetworkManager(port, ip, isHost, this);
     }
 
     public void setGameView(GameView gameView) {
@@ -24,6 +25,20 @@ public class GameController {
     public void startGame() {
         gameModel.startGame();
         gameView.getBoard().show();
+    }
+
+    //TODO:
+    public void handleMessage(Message message) {
+        switch (message.getType()) {
+            case GAME_END:
+                break;
+            case ATTACK:
+                break;
+            case READY:
+                break;
+            case TEXT:
+                break;
+        }
     }
 
     public GameState getCurrentState() {
@@ -37,8 +52,8 @@ public class GameController {
     public void addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
         int length = gameModel.addShip(x, y, angle, isEnemy);
 
-        if (length != 0){
-            switch(angle){
+        if (length != 0) {
+            switch (angle) {
                 case HORIZONTAL:
                     for (int i = 0; i < length; ++i) {
                         gameView.showShip(x + i, y, isEnemy);
@@ -46,7 +61,7 @@ public class GameController {
                     break;
                 case VERTICAL:
                     for (int i = 0; i < length; ++i) {
-                        gameView.showShip(x , y + i, isEnemy);
+                        gameView.showShip(x, y + i, isEnemy);
                     }
                     break;
 

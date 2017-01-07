@@ -2,13 +2,13 @@ package game.ships;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BattleShipTest {
     BattleShip ship;
 
     @Test
-    public void takeDamage() throws Exception {
+    public void givenBattleShipWhenTakingDamageThenHealthDecreases() throws Exception {
         ship = new BattleShip(ShipType.BATTLESHIP, ShipAngle.HORIZONTAL);
 
         for (int i = 0; i < ship.getType().getLength(); ++i) {
@@ -21,7 +21,7 @@ public class BattleShipTest {
     }
 
     @Test
-    public void getAngle() throws Exception {
+    public void givenBattleShipCreatedWithAngleWhenGettingAngleThenCorrectAngleIsReturned() throws Exception {
         ship = new BattleShip(ShipType.BATTLESHIP, ShipAngle.HORIZONTAL);
 
         assertEquals(ship.getAngle(), ShipAngle.HORIZONTAL);
@@ -32,7 +32,7 @@ public class BattleShipTest {
     }
 
     @Test
-    public void getType() throws Exception {
+    public void givenBattleShipCreatedWithTypeWhenGettingTypeThenCorrectTypeIsReturned() throws Exception {
         ship = new BattleShip(ShipType.BATTLESHIP, ShipAngle.HORIZONTAL);
 
         assertEquals(ship.getType(), ShipType.BATTLESHIP);
@@ -43,7 +43,7 @@ public class BattleShipTest {
     }
 
     @Test
-    public void getHealth() throws Exception {
+    public void givenBattleShipWithFullHealthWhenGettingHealthThenCorrectLengthIsReturned() throws Exception {
         ship = new BattleShip(ShipType.BATTLESHIP, ShipAngle.HORIZONTAL);
 
         assertEquals(ship.getHealth(), ShipType.BATTLESHIP.getLength());

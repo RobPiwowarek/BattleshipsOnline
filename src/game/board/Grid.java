@@ -13,7 +13,7 @@ public class Grid {
     private GridElement[][] elements;
     private GameView gameView;
 
-    public Grid(int x, int y) throws IncorrectGridSizeException{
+    public Grid(int x, int y) throws IncorrectGridSizeException {
         if (x < 0) throw new IncorrectGridSizeException("x < 0");
 
         if (y < 0) throw new IncorrectGridSizeException("y < 0");
@@ -50,7 +50,7 @@ public class Grid {
         this.elements = g.elements;
     }
 
-    public boolean addShip(BattleShip ship, int x, int y, boolean isEnemy) throws GridOutOfBoundsException{
+    public boolean addShip(BattleShip ship, int x, int y, boolean isEnemy) throws GridOutOfBoundsException {
         if (x > this.x || x < 0 || y > this.y || y < 0) {
             throw new GridOutOfBoundsException("Incorrect coordinates");
         }
