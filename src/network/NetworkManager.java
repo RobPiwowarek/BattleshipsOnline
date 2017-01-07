@@ -15,7 +15,8 @@ public class NetworkManager {
     private int port;
     private String IP;
     private boolean isServer;
-    private MessageServer messageServer;
+    private MessageReceiver messageReceiver;
+    private MessageSender messageSender;
 
     public NetworkManager(int port, String IP, boolean isServer, GameController controller) {
         this.port = port;
@@ -32,14 +33,19 @@ public class NetworkManager {
         try {
             if (isServer) {
                 ServerSocket socket = new ServerSocket(port);
+                Socket clientSocket = socket.accept();
 
-                messageServer = new MessageServer(socket.accept());
+                messageReceiver = new MessageReceiver(clientSocket);
+                messageSender = new MessageSender(clientSocket);
+                messageReceiver.start();
                 socket.close();
 
             } else {
                 Socket socket = new Socket(IP, port);
 
-                messageServer = new MessageServer(socket);
+                messageReceiver = new MessageReceiver(socket);
+                messageSender = new MessageSender(socket);
+                messageReceiver.start();
             }
         } catch (UnknownHostException e) {
             System.err.println("Unknown host");
@@ -53,19 +59,24 @@ public class NetworkManager {
         return true;
     }
 
-    public boolean sendMessage(Message message) {
-        return messageServer.sendMessage(message);
+    public boolean sendMessage(Message message){
+        try {
+            messageSender.sendMessage(message);
+        } catch (IOException e) {
+            System.err.println("Could not get I/O for the connection. Message not sent");
+            return false;
+        }
+
+        return true;
     }
 
-    private static class MessageServer extends Thread {
+    private static class MessageReceiver extends Thread {
         private Socket socket;
-        private ObjectOutputStream socketOut;
         private ObjectInputStream socketIn;
 
-        public MessageServer(Socket socket) throws IOException {
+        public MessageReceiver(Socket socket) throws IOException {
             this.socket = socket;
 
-            socketOut = new ObjectOutputStream(socket.getOutputStream());
             socketIn = new ObjectInputStream(socket.getInputStream());
         }
 
@@ -73,8 +84,10 @@ public class NetworkManager {
             Message m = null;
 
             try {
-                while ((m = (Message) socketIn.readObject()) != null) {
-                    gameController.handleMessage(m);
+                while (true){
+                    while ((m = (Message) socketIn.readObject()) != null) {
+                        gameController.handleMessage(m);
+                    }
                 }
             } catch (IOException e) {
                 System.err.println("Could not get I/O for connection.");
@@ -84,16 +97,20 @@ public class NetworkManager {
                 System.exit(2);
             }
         }
+    }
 
-        public boolean sendMessage(Message message) {
-            try {
-                socketOut.writeObject(message);
-                return true;
+    private static class MessageSender {
+        private Socket socket;
+        private ObjectOutputStream socketOut;
 
-            } catch (IOException e) {
-                System.err.println("Failed to send message over socket");
-                return false;
-            }
+        public MessageSender(Socket socket) throws IOException {
+            this.socket = socket;
+
+            socketOut = new ObjectOutputStream(socket.getOutputStream());
+        }
+
+        public void sendMessage(Message message) throws IOException {
+            socketOut.writeObject(message);
         }
 
     }
