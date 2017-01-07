@@ -15,7 +15,6 @@ public class NetworkManager {
     private int port;
     private String IP;
     private boolean isServer;
-    private MessageReceiver messageReceiver;
     private MessageSender messageSender;
 
     public NetworkManager(int port, String IP, boolean isServer, GameController controller) {
@@ -31,6 +30,7 @@ public class NetworkManager {
 
     public boolean connect() {
         try {
+            MessageReceiver messageReceiver;
             if (isServer) {
                 ServerSocket socket = new ServerSocket(port);
                 Socket clientSocket = socket.accept();
@@ -59,7 +59,7 @@ public class NetworkManager {
         return true;
     }
 
-    public boolean sendMessage(Message message){
+    public boolean sendMessage(Message message) {
         try {
             messageSender.sendMessage(message);
         } catch (IOException e) {
@@ -84,7 +84,7 @@ public class NetworkManager {
             Message m = null;
 
             try {
-                while (true){
+                while (true) {
                     while ((m = (Message) socketIn.readObject()) != null) {
                         gameController.handleMessage(m);
                     }

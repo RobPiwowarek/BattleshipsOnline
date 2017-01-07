@@ -33,12 +33,42 @@ public class GameController {
             case GAME_END:
                 break;
             case ATTACK:
+                attackMyTile(message.getX(), message.getY());
+                break;
+            case HIT:
+                hitMessageHandler(message);
                 break;
             case READY:
                 break;
             case TEXT:
                 break;
         }
+    }
+
+    public boolean sendMessage(Message message) {
+        return networkManager.sendMessage(message);
+    }
+
+    private void attackMyTile(int x, int y) {
+        if (gameModel.attackTile(x, y)) {
+            gameView.getBoard().hitShip(x, y, false);
+        } else
+            gameView.getBoard().hitTile(x, y, false);
+    }
+
+    // no idea for better name+
+    private void hitMessageHandler(Message message) {
+        if (message.isHit()) {
+            gameModel.lowerEnemyScore();
+            gameModel.setGameState(GameState.MATCH);
+            gameView.getBoard().hitShip(message.getX(), message.getY(), true);
+        } else {
+            gameView.getBoard().hitTile(message.getX(), message.getY(), true);
+        }
+    }
+
+    public void attackEnemyTile(int x, int y) {
+        gameModel.attackEnemyTile(x, y);
     }
 
     public GameState getCurrentState() {

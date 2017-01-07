@@ -1,5 +1,6 @@
 package game.board;
 
+import exception.AlreadyMarkedException;
 import exception.GridOutOfBoundsException;
 import exception.IncorrectGridSizeException;
 import game.ships.BattleShip;
@@ -141,6 +142,21 @@ public class Grid {
         }
 
         return true;
+    }
+
+    public boolean attackTile(int x, int y) {
+        BattleShip ship = elements[y][x].getShip();
+
+        if (ship != null) {
+            ship.takeDamage();
+            try {
+                elements[y][x].mark();
+            } catch (AlreadyMarkedException e) {
+                System.err.println("Element " + "(" + x + "," + y + ")" + " is already marked");
+                e.printStackTrace();
+            }
+            return true;
+        } else return false;
     }
 
     public GridElement getElement(int x, int y) {

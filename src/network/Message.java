@@ -19,6 +19,22 @@ public class Message implements Serializable {
         this.isHit = isHit;
     }
 
+    public static Message getReadyMessage() {
+        return new Message(0, 0, MessageType.READY, "", false, false);
+    }
+
+    public static Message getDefeatMessage() {
+        return new Message(0, 0, MessageType.GAME_END, "You win", true, true);
+    }
+
+    public static Message getHitMessage(int x, int y) {
+        return new Message(x, y, MessageType.HIT, "", false, true);
+    }
+
+    public static Message getAttackMessage(int x, int y) {
+        return new Message(x, y, MessageType.ATTACK, "", false, false);
+    }
+
     public int getX() {
         return x;
     }

@@ -24,7 +24,7 @@ public class GameView {
     }
 
     public void damageShip(int x, int y, boolean isEnemy) {
-        board.damageShip(x, y, isEnemy);
+        board.hitTile(x, y, isEnemy);
     }
 
     public void showShip(int x, int y, boolean isEnemy) {

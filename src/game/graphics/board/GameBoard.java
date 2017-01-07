@@ -52,7 +52,7 @@ public class GameBoard {
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
 
-                Tile field = new Tile(gameView, j, i);
+                Tile field = new Tile(gameView, j, i, isEnemy);
                 field.setPreferredSize(new Dimension(50, 50));
                 field.setBackground(Color.lightGray);
 
@@ -80,13 +80,20 @@ public class GameBoard {
             myTiles[y][x].hideShip();
     }
 
-    public void damageShip(int x, int y, boolean isEnemy) {
+    public void hitTile(int x, int y, boolean isEnemy) {
         if (isEnemy)
-            enemyTiles[y][x].destroyShip();
+            enemyTiles[y][x].hitTile();
         else
-            myTiles[y][x].destroyShip();
+            myTiles[y][x].hitTile();
     }
 
+    public void hitShip(int x, int y, boolean isEnemy) {
+        if (isEnemy) {
+            enemyTiles[y][x].hitShip();
+        } else {
+            myTiles[y][x].hitShip();
+        }
+    }
 
     public void show() {
         boardFrame.setVisible(true);

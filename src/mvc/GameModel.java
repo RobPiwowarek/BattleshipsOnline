@@ -6,13 +6,15 @@ import game.GameState;
 import game.board.Grid;
 import game.ships.ShipAngle;
 import game.ships.ShipType;
+import network.Message;
 
 public class GameModel {
     private GameState gameState;
     private GameController gameController;
     private Grid grid;
     private int shipToAdd = 5;
-    private int score = 0;
+    private int score = 16;
+    private int enemyScore = 16;
     private boolean playerTurn = false;
 
     // TODO: gameView and Controller should be initialised outside GameModel
@@ -58,9 +60,29 @@ public class GameModel {
         this.playerTurn = playerTurn;
     }
 
+    public void lowerEnemyScore() {
+        --enemyScore;
+    }
+
     public boolean changeTurn() {
         playerTurn = !playerTurn;
         return playerTurn;
+    }
+
+    public void attackEnemyTile(int x, int y) {
+        gameController.sendMessage(Message.getAttackMessage(x, y));
+        gameState = GameState.WAITING;
+    }
+
+    // return true if ship was hit
+    public boolean attackTile(int x, int y) {
+        if (grid.attackTile(x, y)) {
+            --score;
+
+            gameController.sendMessage(Message.getHitMessage(x, y));
+
+            return true;
+        } else return false;
     }
 
     public int addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
@@ -69,8 +91,10 @@ public class GameModel {
             boolean success = grid.addShip(shipType, angle, x, y, isEnemy);
             if (success) {
                 --shipToAdd;
-                if (shipToAdd == 0) gameState = GameState.WAITING;
-                // TODO: powiadom drugiego gracza ze pierwszy jest gotowy
+                if (shipToAdd == 0) {
+                    gameState = GameState.WAITING;
+                    gameController.sendMessage(Message.getReadyMessage());
+                }
 
                 return shipType.getLength();
             }
@@ -99,9 +123,9 @@ public class GameModel {
     }
 
     public void startGame() {
+        //TODO:
         /* setup players, wait for connection etc
         */
-
 
         gameState = GameState.START;
 

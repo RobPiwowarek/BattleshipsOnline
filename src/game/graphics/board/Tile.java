@@ -11,12 +11,13 @@ import java.awt.event.MouseListener;
 class Tile extends JButton implements MouseListener {
 
     int x, y;
+    boolean isEnemyTile;
 
     private ImageIcon currentIcon;
 
     private GameView gameView;
 
-    Tile(GameView view, int x, int y) {
+    Tile(GameView view, int x, int y, boolean isEnemyTile) {
         super();
 
         addMouseListener(this);
@@ -24,11 +25,9 @@ class Tile extends JButton implements MouseListener {
         this.x = x;
         this.y = y;
 
-        gameView = view;
-    }
+        this.isEnemyTile = isEnemyTile;
 
-    public void showEnemyShip() {
-        this.setBackground(Color.blue);
+        gameView = view;
     }
 
     public void showShip() {
@@ -40,8 +39,12 @@ class Tile extends JButton implements MouseListener {
         this.setBackground(null);
     }
 
-    public void destroyShip() {
+    public void hitTile() {
         this.setBackground(Color.red);
+    }
+
+    public void hitShip() {
+        this.setBackground(Color.blue);
     }
 
     // Alternatively can be done with icons
@@ -70,20 +73,25 @@ class Tile extends JButton implements MouseListener {
         if (gameView.getGameController().isPlayerTurn()) {
             switch (gameView.getGameController().getCurrentState()) {
                 case START:
-                    if (SwingUtilities.isRightMouseButton(e)) {
-                        gameView.getGameController().addShip(x, y, ShipAngle.HORIZONTAL, false);
-                    } else {
-                        gameView.getGameController().addShip(x, y, ShipAngle.VERTICAL, false);
-                    }
+                    if (!isEnemyTile)
+                        addShip(e);
                     break;
-
                 case MATCH: {
-                    // TODO:
+                    if (isEnemyTile) {
+                        gameView.getGameController().attackEnemyTile(x, y);
+                    }
 
                     break;
                 }
-                default:
             }
+        }
+    }
+
+    private void addShip(MouseEvent e) {
+        if (SwingUtilities.isRightMouseButton(e)) {
+            gameView.getGameController().addShip(x, y, ShipAngle.HORIZONTAL, false);
+        } else {
+            gameView.getGameController().addShip(x, y, ShipAngle.VERTICAL, false);
         }
     }
 
