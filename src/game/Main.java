@@ -1,3 +1,5 @@
+package game;
+
 import exception.IncorrectGridSizeException;
 import mvc.GameController;
 import mvc.GameModel;
@@ -17,11 +19,16 @@ public class Main {
         gameController.setGameView(gameView);
     }
 
-    public static void restart() throws IncorrectGridSizeException {
+    public static void restart() {
         gameView.getBoard().dispose();
         gameView.getMenu().dispose();
 
-        gameModel = new GameModel();
+        try {
+            gameModel = new GameModel();
+        } catch (IncorrectGridSizeException e) {
+            e.printStackTrace();
+            System.exit(5);
+        }
         gameController = new GameController(gameModel);
         gameView = new GameView(gameController);
 

@@ -102,6 +102,7 @@ public class NetworkManager {
                 MessageReceiver messageReceiver;
                 if (isServer) {
                     socket = new ServerSocket(port);
+                    socket.setSoTimeout(10000);
                     Socket clientSocket = socket.accept();
 
                     messageSender = new MessageSender(clientSocket);
@@ -109,7 +110,9 @@ public class NetworkManager {
                     messageReceiver = new MessageReceiver(clientSocket);
                     messageReceiver.start();
 
-                    if (clientSocket.isConnected()) isConnected = true;
+                    isConnected = true;
+
+                    gameController.startGame();
 
                     socket.close();
 
@@ -121,11 +124,16 @@ public class NetworkManager {
                     messageReceiver = new MessageReceiver(clientSocket);
                     messageReceiver.start();
 
-                    if (clientSocket.isConnected()) isConnected = true;
+                    isConnected = true;
+
+                    gameController.startGame();
                 }
             } catch (UnknownHostException e) {
                 System.err.println("Unknown host");
             } catch (IOException e) {
+                gameController.displayMessage("Connection Timeout. ");
+                gameController.forceRestart();
+
                 System.err.println("Could not get I/O for the connection.");
             }
         }

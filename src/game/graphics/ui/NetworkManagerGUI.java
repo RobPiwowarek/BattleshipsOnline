@@ -53,7 +53,6 @@ public class NetworkManagerGUI {
                 System.out.println("isServer: " + isServer + "\nIP: " + ip + "\nPort: " + port);
                 gameView.getGameController().createNetworkManager(port, ip, isServer);
                 gameView.getGameController().connect();
-                gameView.getGameController().startGame();
                 frame.setVisible(false);
                 frame.dispose();
             }

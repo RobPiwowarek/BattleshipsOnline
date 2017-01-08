@@ -14,7 +14,7 @@ public class MainMenu {
     public MainMenu(GameView view) {
         gameView = view;
 
-        menuFrame = new JFrame("Main menu");
+        menuFrame = new JFrame("game.Main menu");
 
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

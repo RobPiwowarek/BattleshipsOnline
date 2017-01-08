@@ -1,6 +1,7 @@
 package mvc;
 
 import game.GameState;
+import game.Main;
 import game.ships.ShipAngle;
 import network.Message;
 import network.NetworkManager;
@@ -23,6 +24,7 @@ public class GameController {
     }
 
     public void startGame() {
+        displayMessage("Connected.");
         gameModel.startGame();
         gameView.getBoard().show();
     }
@@ -53,6 +55,7 @@ public class GameController {
             displayMessage("DEFEAT");
         }
 
+        Main.restart();
     }
 
     public void displayMessage(String message) {
@@ -72,7 +75,12 @@ public class GameController {
     }
 
     public void connect() {
+        displayMessage("Connecting...");
         networkManager.connect();
+    }
+
+    public void forceRestart() {
+        Main.restart();
     }
 
     boolean sendMessage(Message message) {

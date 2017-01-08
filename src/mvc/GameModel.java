@@ -136,6 +136,8 @@ public class GameModel {
     void startGame() {
         gameState = GameState.START;
 
+        gameController.displayMessage("You can now place your battleships\nLeft click - vertically\nRight click - horizontally");
+
         playerTurn = true;
     }
 
