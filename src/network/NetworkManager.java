@@ -1,5 +1,6 @@
 package network;
 
+import game.GameState;
 import mvc.GameController;
 
 import java.io.IOException;
@@ -10,8 +11,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class NetworkManager {
-    private static GameController gameController;
-    boolean isConnected = false;
+    private GameController gameController;
+    private boolean isConnected = false;
     private int port;
     private String IP;
     private boolean isServer;
@@ -48,11 +49,27 @@ public class NetworkManager {
         return true;
     }
 
-    private static class MessageReceiver extends Thread {
+    private static class MessageSender {
+        private Socket socket;
+        private ObjectOutputStream socketOut;
+
+        MessageSender(Socket socket) throws IOException {
+            this.socket = socket;
+
+            socketOut = new ObjectOutputStream(socket.getOutputStream());
+        }
+
+        void sendMessage(Message message) throws IOException {
+            socketOut.writeObject(message);
+        }
+
+    }
+
+    private class MessageReceiver extends Thread {
         private Socket socket;
         private ObjectInputStream socketIn;
 
-        public MessageReceiver(Socket socket) throws IOException {
+        MessageReceiver(Socket socket) throws IOException {
             this.socket = socket;
 
             socketIn = new ObjectInputStream(socket.getInputStream());
@@ -63,6 +80,11 @@ public class NetworkManager {
 
             try {
                 while (true) {
+                    if (gameController.getGameState() == GameState.END) {
+                        socket.close();
+                        return;
+                    }
+
                     while ((m = (Message) socketIn.readObject()) != null) {
                         gameController.handleMessage(m);
                     }
@@ -75,22 +97,6 @@ public class NetworkManager {
                 System.exit(2);
             }
         }
-    }
-
-    private static class MessageSender {
-        private Socket socket;
-        private ObjectOutputStream socketOut;
-
-        public MessageSender(Socket socket) throws IOException {
-            this.socket = socket;
-
-            socketOut = new ObjectOutputStream(socket.getOutputStream());
-        }
-
-        public void sendMessage(Message message) throws IOException {
-            socketOut.writeObject(message);
-        }
-
     }
 
     private class GameServer extends Thread {

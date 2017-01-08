@@ -16,7 +16,7 @@ public class GameBoard {
         gameView = view;
 
         boardFrame = new JFrame("Your Board");
-        boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        boardFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setupLayout();
 

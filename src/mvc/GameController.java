@@ -6,9 +6,9 @@ import network.Message;
 import network.NetworkManager;
 
 public class GameController {
-    GameModel gameModel;
-    NetworkManager networkManager;
-    GameView gameView;
+    private GameModel gameModel;
+    private NetworkManager networkManager;
+    private GameView gameView;
 
     public GameController(GameModel g) {
         gameModel = g;
@@ -56,6 +56,10 @@ public class GameController {
         }
     }
 
+    public GameState getGameState() {
+        return gameModel.getGameState();
+    }
+
     private void tryToBeginMatch() {
         if (gameModel.getGameState() == GameState.WAITING) {
             gameModel.setGameState(GameState.MATCH);
@@ -68,7 +72,7 @@ public class GameController {
         networkManager.connect();
     }
 
-    public boolean sendMessage(Message message) {
+    boolean sendMessage(Message message) {
         return networkManager.sendMessage(message);
     }
 

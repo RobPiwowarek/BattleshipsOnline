@@ -10,8 +10,8 @@ import java.awt.event.MouseListener;
 
 class Tile extends JButton implements MouseListener {
 
-    int x, y;
-    boolean isEnemyTile;
+    private int x, y;
+    private boolean isEnemyTile;
 
     private ImageIcon currentIcon;
 
@@ -30,19 +30,19 @@ class Tile extends JButton implements MouseListener {
         gameView = view;
     }
 
-    public void showShip() {
+    void showShip() {
         this.setBackground(Color.black);
     }
 
-    public void hideShip() {
+    void hideShip() {
         this.setBackground(null);
     }
 
-    public void hitTile() {
+    void hitTile() {
         this.setBackground(Color.white);
     }
 
-    public void hitShip() {
+    void hitShip() {
         this.setBackground(Color.red);
     }
 

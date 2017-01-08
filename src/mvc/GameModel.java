@@ -36,11 +36,11 @@ public class GameModel {
         return this;
     }
 
-    public GameState getGameState() {
+    GameState getGameState() {
         return gameState;
     }
 
-    public void setGameState(GameState gameState) {
+    void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
@@ -52,15 +52,15 @@ public class GameModel {
         this.score = score;
     }
 
-    public boolean isPlayerTurn() {
+    boolean isPlayerTurn() {
         return playerTurn;
     }
 
-    public void setPlayerTurn(boolean playerTurn) {
+    void setPlayerTurn(boolean playerTurn) {
         this.playerTurn = playerTurn;
     }
 
-    public void lowerEnemyScore() {
+    void lowerEnemyScore() {
         if (--enemyScore == 0) {
             gameController.sendMessage(Message.getVictoryMessage());
             gameState = GameState.END;
@@ -74,7 +74,7 @@ public class GameModel {
         return enemyReady;
     }
 
-    public void setEnemyReady(boolean enemyReady) {
+    void setEnemyReady(boolean enemyReady) {
         this.enemyReady = enemyReady;
     }
 
@@ -83,13 +83,13 @@ public class GameModel {
         return playerTurn;
     }
 
-    public void attackEnemyTile(int x, int y) {
+    void attackEnemyTile(int x, int y) {
         gameController.sendMessage(Message.getAttackMessage(x, y));
         gameState = GameState.WAITING;
     }
 
     // return true if ship was hit
-    public boolean attackTile(int x, int y) {
+    boolean attackTile(int x, int y) {
         if (grid.attackTile(x, y)) {
             --score;
 
@@ -99,7 +99,7 @@ public class GameModel {
         } else return false;
     }
 
-    public int addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
+    int addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
         try {
             ShipType shipType = chooseShip();
             boolean success = grid.addShip(shipType, angle, x, y, isEnemy);
@@ -142,7 +142,7 @@ public class GameModel {
         }
     }
 
-    public void startGame() {
+    void startGame() {
         gameState = GameState.START;
 
         playerTurn = true;
