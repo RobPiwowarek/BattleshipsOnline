@@ -4,6 +4,7 @@ import mvc.GameView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class MainMenu {
 
@@ -84,6 +85,8 @@ public class MainMenu {
         startButton.setPreferredSize(new Dimension(500, 50));
 
         setupStartButton(startButton);
+        setupAuthorButton(authorButton);
+        setupExitButton(exitButton);
 
         panel.add(startButton);
         panel.add(authorButton);
@@ -96,11 +99,28 @@ public class MainMenu {
 
     private void setupStartButton(JButton start) {
         start.addActionListener(e -> {
-            System.out.println("Start FileMenu Item pressed");
+            System.out.println("Start pressed");
 
             gameView.getNetGUI().show();
             menuFrame.setVisible(false);
         });
     }
 
+    private void setupAuthorButton(JButton author) {
+        author.addActionListener(e -> {
+            System.out.println("Author pressed");
+
+            JOptionPane.showMessageDialog(null, "Robert Piwowarek\nPW\nWEITI INFROMATYKA 3I2");
+        });
+    }
+
+    private void setupExitButton(JButton exit) {
+        exit.addActionListener(e -> {
+            menuFrame.dispatchEvent(new WindowEvent(menuFrame, WindowEvent.WINDOW_CLOSING));
+        });
+    }
+
+    public void dispose() {
+        menuFrame.dispose();
+    }
 }

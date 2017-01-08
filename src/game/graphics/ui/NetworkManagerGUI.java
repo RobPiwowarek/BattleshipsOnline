@@ -55,6 +55,7 @@ public class NetworkManagerGUI {
                 gameView.getGameController().connect();
                 gameView.getGameController().startGame();
                 frame.setVisible(false);
+                frame.dispose();
             }
         });
 

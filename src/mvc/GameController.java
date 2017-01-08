@@ -27,7 +27,6 @@ public class GameController {
         gameView.getBoard().show();
     }
 
-    //TODO:
     public void handleMessage(Message message) {
         switch (message.getType()) {
             case GAME_END:
@@ -47,13 +46,17 @@ public class GameController {
         }
     }
 
-    //TODO:
     private void endGame(Message message) {
         if (message.isDefeat()) {
-            // player wygral
+            displayMessage("VICTORY");
         } else {
-            // przeciwnik wygral
+            displayMessage("DEFEAT");
         }
+
+    }
+
+    public void displayMessage(String message) {
+        gameView.getBoard().showMessage(message);
     }
 
     public GameState getGameState() {
@@ -83,6 +86,7 @@ public class GameController {
             gameView.getBoard().hitTile(x, y, false);
             gameModel.setPlayerTurn(true);
             gameModel.setGameState(GameState.MATCH);
+            displayMessage("Your turn");
         }
     }
 

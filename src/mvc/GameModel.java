@@ -65,22 +65,13 @@ public class GameModel {
             gameController.sendMessage(Message.getVictoryMessage());
             gameState = GameState.END;
 
-            // TODO: Inform player of victory
+            gameController.displayMessage("VICTORY");
         }
 
     }
 
-    public boolean isEnemyReady() {
-        return enemyReady;
-    }
-
     void setEnemyReady(boolean enemyReady) {
         this.enemyReady = enemyReady;
-    }
-
-    public boolean changeTurn() {
-        playerTurn = !playerTurn;
-        return playerTurn;
     }
 
     void attackEnemyTile(int x, int y) {

@@ -29,17 +29,12 @@ public class NetworkManager {
         return isConnected;
     }
 
-    public boolean connect() {
+    public void connect() {
         new GameServer().start();
-
-        isConnected = true;
-        return true;
     }
 
     public boolean sendMessage(Message message) {
         try {
-            if (messageSender == null) System.out.println("DUPA");
-
             messageSender.sendMessage(message);
         } catch (IOException e) {
             System.err.println("Could not get I/O for the connection. Message not sent");
@@ -114,6 +109,8 @@ public class NetworkManager {
                     messageReceiver = new MessageReceiver(clientSocket);
                     messageReceiver.start();
 
+                    if (clientSocket.isConnected()) isConnected = true;
+
                     socket.close();
 
                 } else {
@@ -123,6 +120,8 @@ public class NetworkManager {
 
                     messageReceiver = new MessageReceiver(clientSocket);
                     messageReceiver.start();
+
+                    if (clientSocket.isConnected()) isConnected = true;
                 }
             } catch (UnknownHostException e) {
                 System.err.println("Unknown host");

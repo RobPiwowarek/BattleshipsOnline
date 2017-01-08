@@ -95,6 +95,10 @@ public class GameBoard {
         }
     }
 
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(null, message);
+    }
+
     public void show() {
         boardFrame.setVisible(true);
     }
@@ -103,4 +107,7 @@ public class GameBoard {
         boardFrame.setVisible(false);
     }
 
+    public void dispose() {
+        boardFrame.dispose();
+    }
 }
