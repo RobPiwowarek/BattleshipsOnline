@@ -138,6 +138,11 @@ public class NetworkManager {
                 gameController.forceRestart();
 
                 System.err.println("Could not get I/O for the connection.");
+                try {
+                    socket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         }
 

@@ -25,7 +25,9 @@ public class Main {
         gameView.getBoard().dispose();
         gameView.getMenu().dispose();
 
-        gameController.getNetworkManager().closeSocket();
+        if (gameController.getNetworkManager().isConnected())
+            gameController.getNetworkManager().closeSocket();
+
 
         try {
             gameModel = new GameModel();
