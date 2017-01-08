@@ -3,6 +3,7 @@ package mvc;
 import exception.IncorrectGridSizeException;
 import exception.IncorrectShipTypeException;
 import game.GameState;
+import game.Main;
 import game.board.Grid;
 import game.ships.ShipAngle;
 import game.ships.ShipType;
@@ -66,6 +67,7 @@ public class GameModel {
             gameState = GameState.END;
 
             gameController.displayMessage("VICTORY");
+            Main.restart();
         }
 
     }

@@ -4,8 +4,6 @@ import mvc.GameView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class NetworkManagerGUI {
     private JFrame frame;
@@ -16,7 +14,6 @@ public class NetworkManagerGUI {
     private int port;
     private boolean isServer;
 
-
     public NetworkManagerGUI(GameView view) {
         gameView = view;
         frame = new JFrame("Connection");
@@ -24,7 +21,7 @@ public class NetworkManagerGUI {
 
         frame.getContentPane().setLayout(new FlowLayout());
         ipArea = setupTextField("127.0.0.1");
-        portArea = setupTextField("22");
+        portArea = setupTextField("4444");
         setupPanel();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -41,21 +38,18 @@ public class NetworkManagerGUI {
     private void setupConnectButton(JPanel panel) {
         JButton button = new JButton("Connect");
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Connect Button Pressed");
+        button.addActionListener(e -> {
+            System.out.println("Connect Button Pressed");
 
-                isServer = hostArea.isSelected();
-                ip = ipArea.getText();
-                port = Integer.valueOf(portArea.getText());
+            isServer = hostArea.isSelected();
+            ip = ipArea.getText();
+            port = Integer.valueOf(portArea.getText());
 
-                System.out.println("isServer: " + isServer + "\nIP: " + ip + "\nPort: " + port);
-                gameView.getGameController().createNetworkManager(port, ip, isServer);
-                gameView.getGameController().connect();
-                frame.setVisible(false);
-                frame.dispose();
-            }
+            System.out.println("isServer: " + isServer + "\nIP: " + ip + "\nPort: " + port);
+            gameView.getGameController().createNetworkManager(port, ip, isServer);
+            gameView.getGameController().connect();
+            frame.setVisible(false);
+            frame.dispose();
         });
 
         panel.add(button);

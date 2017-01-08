@@ -1,6 +1,5 @@
 package network;
 
-import game.GameState;
 import mvc.GameController;
 
 import java.io.IOException;
@@ -17,6 +16,7 @@ public class NetworkManager {
     private String IP;
     private boolean isServer;
     private MessageSender messageSender;
+    private Socket cSocket = null;
 
     public NetworkManager(int port, String IP, boolean isServer, GameController controller) {
         this.port = port;
@@ -42,6 +42,14 @@ public class NetworkManager {
         }
 
         return true;
+    }
+
+    public void closeSocket() {
+        try {
+            cSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static class MessageSender {
@@ -75,11 +83,6 @@ public class NetworkManager {
 
             try {
                 while (true) {
-                    if (gameController.getGameState() == GameState.END) {
-                        socket.close();
-                        return;
-                    }
-
                     while ((m = (Message) socketIn.readObject()) != null) {
                         gameController.handleMessage(m);
                     }
@@ -102,7 +105,7 @@ public class NetworkManager {
                 MessageReceiver messageReceiver;
                 if (isServer) {
                     socket = new ServerSocket(port);
-                    socket.setSoTimeout(10000);
+                    socket.setSoTimeout(15000);
                     Socket clientSocket = socket.accept();
 
                     messageSender = new MessageSender(clientSocket);
@@ -139,7 +142,6 @@ public class NetworkManager {
         }
 
     }
-
 }
 
 

@@ -20,8 +20,12 @@ public class Main {
     }
 
     public static void restart() {
+        gameView.getBoard().hide();
+        gameView.getMenu().hide();
         gameView.getBoard().dispose();
         gameView.getMenu().dispose();
+
+        gameController.getNetworkManager().closeSocket();
 
         try {
             gameModel = new GameModel();

@@ -15,6 +15,10 @@ public class GameController {
         gameModel = g;
     }
 
+    public NetworkManager getNetworkManager() {
+        return networkManager;
+    }
+
     public void createNetworkManager(int port, String ip, boolean isHost) {
         networkManager = new NetworkManager(port, ip, isHost, this);
     }
@@ -55,7 +59,7 @@ public class GameController {
             displayMessage("DEFEAT");
         }
 
-        Main.restart();
+        forceRestart();
     }
 
     public void displayMessage(String message) {
@@ -67,6 +71,8 @@ public class GameController {
     }
 
     private void tryToBeginMatch() {
+        displayMessage("Opponent is ready");
+
         if (gameModel.getGameState() == GameState.WAITING) {
             gameModel.setGameState(GameState.MATCH);
         } else {
