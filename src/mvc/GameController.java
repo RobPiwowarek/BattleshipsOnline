@@ -31,6 +31,7 @@ public class GameController {
     public void handleMessage(Message message) {
         switch (message.getType()) {
             case GAME_END:
+                endGame(message);
                 break;
             case ATTACK:
                 attackMyTile(message.getX(), message.getY());
@@ -39,10 +40,32 @@ public class GameController {
                 hitMessageHandler(message);
                 break;
             case READY:
+                tryToBeginMatch();
                 break;
             case TEXT:
                 break;
         }
+    }
+
+    //TODO:
+    private void endGame(Message message) {
+        if (message.isDefeat()) {
+            // player wygral
+        } else {
+            // przeciwnik wygral
+        }
+    }
+
+    private void tryToBeginMatch() {
+        if (gameModel.getGameState() == GameState.WAITING) {
+            gameModel.setGameState(GameState.MATCH);
+        } else {
+            gameModel.setEnemyReady(true);
+        }
+    }
+
+    public void connect() {
+        networkManager.connect();
     }
 
     public boolean sendMessage(Message message) {
@@ -52,8 +75,11 @@ public class GameController {
     private void attackMyTile(int x, int y) {
         if (gameModel.attackTile(x, y)) {
             gameView.getBoard().hitShip(x, y, false);
-        } else
+        } else {
             gameView.getBoard().hitTile(x, y, false);
+            gameModel.setPlayerTurn(true);
+            gameModel.setGameState(GameState.MATCH);
+        }
     }
 
     // no idea for better name+
@@ -69,6 +95,7 @@ public class GameController {
 
     public void attackEnemyTile(int x, int y) {
         gameModel.attackEnemyTile(x, y);
+        gameView.getBoard().hitTile(x, y, true);
     }
 
     public GameState getCurrentState() {

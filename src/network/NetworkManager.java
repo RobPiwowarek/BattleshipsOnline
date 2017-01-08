@@ -29,31 +29,7 @@ public class NetworkManager {
     }
 
     public boolean connect() {
-        try {
-            MessageReceiver messageReceiver;
-            if (isServer) {
-                ServerSocket socket = new ServerSocket(port);
-                Socket clientSocket = socket.accept();
-
-                messageReceiver = new MessageReceiver(clientSocket);
-                messageSender = new MessageSender(clientSocket);
-                messageReceiver.start();
-                socket.close();
-
-            } else {
-                Socket socket = new Socket(IP, port);
-
-                messageReceiver = new MessageReceiver(socket);
-                messageSender = new MessageSender(socket);
-                messageReceiver.start();
-            }
-        } catch (UnknownHostException e) {
-            System.err.println("Unknown host");
-            return false;
-        } catch (IOException e) {
-            System.err.println("Could not get I/O for the connection.");
-            return false;
-        }
+        new GameServer().start();
 
         isConnected = true;
         return true;
@@ -61,6 +37,8 @@ public class NetworkManager {
 
     public boolean sendMessage(Message message) {
         try {
+            if (messageSender == null) System.out.println("DUPA");
+
             messageSender.sendMessage(message);
         } catch (IOException e) {
             System.err.println("Could not get I/O for the connection. Message not sent");
@@ -111,6 +89,40 @@ public class NetworkManager {
 
         public void sendMessage(Message message) throws IOException {
             socketOut.writeObject(message);
+        }
+
+    }
+
+    private class GameServer extends Thread {
+        private ServerSocket socket;
+
+        public void run() {
+            try {
+                MessageReceiver messageReceiver;
+                if (isServer) {
+                    socket = new ServerSocket(port);
+                    Socket clientSocket = socket.accept();
+
+                    messageSender = new MessageSender(clientSocket);
+
+                    messageReceiver = new MessageReceiver(clientSocket);
+                    messageReceiver.start();
+
+                    socket.close();
+
+                } else {
+                    Socket clientSocket = new Socket(IP, port);
+
+                    messageSender = new MessageSender(clientSocket);
+
+                    messageReceiver = new MessageReceiver(clientSocket);
+                    messageReceiver.start();
+                }
+            } catch (UnknownHostException e) {
+                System.err.println("Unknown host");
+            } catch (IOException e) {
+                System.err.println("Could not get I/O for the connection.");
+            }
         }
 
     }

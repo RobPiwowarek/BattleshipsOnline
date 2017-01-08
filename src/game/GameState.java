@@ -5,4 +5,5 @@ public enum GameState {
     WAITING,
     START, // placement
     MATCH, // game in play
+    END
 }

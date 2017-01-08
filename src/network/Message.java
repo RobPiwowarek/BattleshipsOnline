@@ -27,6 +27,10 @@ public class Message implements Serializable {
         return new Message(0, 0, MessageType.GAME_END, "You win", true, true);
     }
 
+    public static Message getVictoryMessage() {
+        return new Message(0, 0, MessageType.GAME_END, "You lose", false, false);
+    }
+
     public static Message getHitMessage(int x, int y) {
         return new Message(x, y, MessageType.HIT, "", false, true);
     }

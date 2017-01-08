@@ -16,8 +16,8 @@ public class GameModel {
     private int score = 16;
     private int enemyScore = 16;
     private boolean playerTurn = false;
+    private boolean enemyReady = false;
 
-    // TODO: gameView and Controller should be initialised outside GameModel
     public GameModel() throws IncorrectGridSizeException {
         grid = new Grid(GameView.BOARD_SIDE_LENGTH, GameView.BOARD_SIDE_LENGTH);
 
@@ -61,7 +61,21 @@ public class GameModel {
     }
 
     public void lowerEnemyScore() {
-        --enemyScore;
+        if (--enemyScore == 0) {
+            gameController.sendMessage(Message.getVictoryMessage());
+            gameState = GameState.END;
+
+            // TODO: Inform player of victory
+        }
+
+    }
+
+    public boolean isEnemyReady() {
+        return enemyReady;
+    }
+
+    public void setEnemyReady(boolean enemyReady) {
+        this.enemyReady = enemyReady;
     }
 
     public boolean changeTurn() {
@@ -90,9 +104,15 @@ public class GameModel {
             ShipType shipType = chooseShip();
             boolean success = grid.addShip(shipType, angle, x, y, isEnemy);
             if (success) {
-                --shipToAdd;
-                if (shipToAdd == 0) {
+                if (--shipToAdd == 0) {
                     gameState = GameState.WAITING;
+
+                    if (enemyReady) {
+                        gameState = GameState.MATCH;
+                        playerTurn = false;
+                    } else
+                        playerTurn = true;
+
                     gameController.sendMessage(Message.getReadyMessage());
                 }
 
@@ -123,10 +143,6 @@ public class GameModel {
     }
 
     public void startGame() {
-        //TODO:
-        /* setup players, wait for connection etc
-        */
-
         gameState = GameState.START;
 
         playerTurn = true;

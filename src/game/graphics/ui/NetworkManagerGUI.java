@@ -26,14 +26,14 @@ public class NetworkManagerGUI {
         ipArea = setupTextField("127.0.0.1");
         portArea = setupTextField("22");
         setupPanel();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
     }
 
     private void setupPanel() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
 
-        hostArea = setupCheckBox("Server", panel);
+        hostArea = setupCheckBox("Host", panel);
         setupConnectButton(panel);
         this.frame.add(panel);
     }
@@ -52,6 +52,9 @@ public class NetworkManagerGUI {
 
                 System.out.println("isServer: " + isServer + "\nIP: " + ip + "\nPort: " + port);
                 gameView.getGameController().createNetworkManager(port, ip, isServer);
+                gameView.getGameController().connect();
+                gameView.getGameController().startGame();
+                frame.setVisible(false);
             }
         });
 

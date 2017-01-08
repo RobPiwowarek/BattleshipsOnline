@@ -34,17 +34,16 @@ class Tile extends JButton implements MouseListener {
         this.setBackground(Color.black);
     }
 
-    // TODO: check if correct way to remove colour
     public void hideShip() {
         this.setBackground(null);
     }
 
     public void hitTile() {
-        this.setBackground(Color.red);
+        this.setBackground(Color.white);
     }
 
     public void hitShip() {
-        this.setBackground(Color.blue);
+        this.setBackground(Color.red);
     }
 
     // Alternatively can be done with icons

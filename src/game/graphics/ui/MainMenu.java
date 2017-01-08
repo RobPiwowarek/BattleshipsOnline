@@ -4,8 +4,6 @@ import mvc.GameView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainMenu {
 
@@ -20,8 +18,6 @@ public class MainMenu {
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setupLayoutManager();
-
-        setupMenuBar();
 
         menuFrame.pack();
 
@@ -87,6 +83,8 @@ public class MainMenu {
 
         startButton.setPreferredSize(new Dimension(500, 50));
 
+        setupStartButton(startButton);
+
         panel.add(startButton);
         panel.add(authorButton);
         panel.add(exitButton);
@@ -96,49 +94,13 @@ public class MainMenu {
         panel.add(new JLabel(new ImageIcon(new ImageIcon("src/resources/images/logo.png").getImage().getScaledInstance(800, 120, Image.SCALE_SMOOTH))));
     }
 
-    private void setupMenuBar() {
-        final JMenuBar menuBar = new JMenuBar();
+    private void setupStartButton(JButton start) {
+        start.addActionListener(e -> {
+            System.out.println("Start FileMenu Item pressed");
 
-        menuBar.add(createFileMenu());
-
-        this.menuFrame.setJMenuBar(menuBar);
-    }
-
-    private JMenu createFileMenu() {
-        final JMenu fileMenu = new JMenu("File");
-
-        fileMenu.add(createStartItem());
-        fileMenu.add(createConnectItem());
-
-        return fileMenu;
-    }
-
-    private JMenuItem createStartItem() {
-        JMenuItem start = new JMenuItem("Start");
-
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Start FileMenu Item pressed");
-
-                gameView.getGameController().startGame();
-            }
+            gameView.getNetGUI().show();
+            menuFrame.setVisible(false);
         });
-
-        return start;
     }
 
-    private JMenuItem createConnectItem() {
-        JMenuItem connect = new JMenuItem("Connect");
-
-        connect.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Connect pressed");
-                gameView.getNetGUI().show();
-            }
-        });
-
-        return connect;
-    }
 }
