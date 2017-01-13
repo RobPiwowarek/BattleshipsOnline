@@ -1,5 +1,7 @@
 package mvc;
 
+import exception.GridOutOfBoundsException;
+import exception.IncorrectShipTypeException;
 import game.GameState;
 import game.Main;
 import game.ships.ShipAngle;
@@ -155,7 +157,18 @@ public class GameController {
     }
 
     public void addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
-        int length = gameModel.addShip(x, y, angle, isEnemy);
+        int length = 0;
+        try {
+            length = gameModel.addShip(x, y, angle, isEnemy);
+        } catch (GridOutOfBoundsException e) {
+            System.err.println("GridOutOfBounds Exception");
+            sendMessage(Message.getDefeatMessage());
+            forceRestart();
+        } catch (IncorrectShipTypeException e) {
+            System.err.println("Incorrect Ship Type Exception");
+            sendMessage(Message.getDefeatMessage());
+            forceRestart();
+        }
 
         if (gameModel.getLengthOfShipToAdd() >= 2)
             displayMessage("The next ship to place has length of " + gameModel.getLengthOfShipToAdd());

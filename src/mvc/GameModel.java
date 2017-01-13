@@ -1,5 +1,6 @@
 package mvc;
 
+import exception.GridOutOfBoundsException;
 import exception.IncorrectGridSizeException;
 import exception.IncorrectShipTypeException;
 import game.GameState;
@@ -30,8 +31,8 @@ public class GameModel {
             return 0;
     }
 
-    public GameModel getGameModel() {
-        return this;
+    public Grid getGrid() {
+        return grid;
     }
 
     GameState getGameState() {
@@ -75,29 +76,27 @@ public class GameModel {
         if (grid.attackTile(x, y)) {
             --score;
 
+            if (score == 0)
+                gameState = GameState.END;
+
             return true;
         } else return false;
     }
 
-    int addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
-        try {
-            ShipType shipType = chooseShip();
-            boolean success = grid.addShip(shipType, angle, x, y, isEnemy);
-            if (success) {
-                if (--shipToAdd == 0) {
-                    gameState = GameState.WAITING;
+    int addShip(int x, int y, ShipAngle angle, boolean isEnemy) throws GridOutOfBoundsException, IncorrectShipTypeException {
+        ShipType shipType = chooseShip();
+        boolean success = grid.addShip(shipType, angle, x, y, isEnemy);
+        if (success) {
+            if (--shipToAdd == 0) {
+                gameState = GameState.WAITING;
 
-                    if (enemyReady) {
-                        gameState = GameState.MATCH;
-                        playerTurn = false;
-                    } else
-                        playerTurn = true;
-                }
-                return shipType.getLength();
+                if (enemyReady) {
+                    gameState = GameState.MATCH;
+                    playerTurn = false;
+                } else
+                    playerTurn = true;
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            return shipType.getLength();
         }
 
         return 0;

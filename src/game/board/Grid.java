@@ -5,13 +5,11 @@ import exception.IncorrectGridSizeException;
 import game.ships.BattleShip;
 import game.ships.ShipAngle;
 import game.ships.ShipType;
-import mvc.GameView;
 
 public class Grid {
     private int x;
     private int y;
     private GridElement[][] elements;
-    private GameView gameView;
 
     public Grid(int x, int y) throws IncorrectGridSizeException {
         if (x < 0) throw new IncorrectGridSizeException("x < 0");

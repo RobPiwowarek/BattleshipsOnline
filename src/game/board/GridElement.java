@@ -34,7 +34,7 @@ class GridElement {
         return this.marked;
     }
 
-    private void damageShip() {
+    public void damageShip() {
         if (this.ship != null) {
             this.ship.takeDamage();
         }
