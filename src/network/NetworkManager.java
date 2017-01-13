@@ -53,12 +53,9 @@ public class NetworkManager {
     }
 
     private static class MessageSender {
-        private Socket socket;
         private ObjectOutputStream socketOut;
 
         MessageSender(Socket socket) throws IOException {
-            this.socket = socket;
-
             socketOut = new ObjectOutputStream(socket.getOutputStream());
         }
 
@@ -69,17 +66,14 @@ public class NetworkManager {
     }
 
     private class MessageReceiver extends Thread {
-        private Socket socket;
         private ObjectInputStream socketIn;
 
         MessageReceiver(Socket socket) throws IOException {
-            this.socket = socket;
-
             socketIn = new ObjectInputStream(socket.getInputStream());
         }
 
         public void run() {
-            Message m = null;
+            Message m;
 
             try {
                 while (true) {
@@ -89,10 +83,8 @@ public class NetworkManager {
                 }
             } catch (IOException e) {
                 System.err.println("Could not get I/O for connection.");
-                System.exit(1);
             } catch (ClassNotFoundException e) {
                 System.err.println("Received class not found.");
-                System.exit(2);
             }
         }
     }
@@ -107,6 +99,7 @@ public class NetworkManager {
                     socket = new ServerSocket(port);
                     socket.setSoTimeout(15000);
                     Socket clientSocket = socket.accept();
+                    cSocket = clientSocket;
 
                     messageSender = new MessageSender(clientSocket);
 
@@ -121,6 +114,8 @@ public class NetworkManager {
 
                 } else {
                     Socket clientSocket = new Socket(IP, port);
+
+                    cSocket = clientSocket;
 
                     messageSender = new MessageSender(clientSocket);
 

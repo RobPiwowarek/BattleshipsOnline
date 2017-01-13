@@ -15,7 +15,6 @@ public class Main {
         gameController = new GameController(gameModel);
         gameView = new GameView(gameController);
 
-        gameModel.setGameController(gameController);
         gameController.setGameView(gameView);
     }
 
@@ -28,7 +27,6 @@ public class Main {
         if (gameController.getNetworkManager().isConnected())
             gameController.getNetworkManager().closeSocket();
 
-
         try {
             gameModel = new GameModel();
         } catch (IncorrectGridSizeException e) {
@@ -38,7 +36,6 @@ public class Main {
         gameController = new GameController(gameModel);
         gameView = new GameView(gameController);
 
-        gameModel.setGameController(gameController);
         gameController.setGameView(gameView);
     }
 }

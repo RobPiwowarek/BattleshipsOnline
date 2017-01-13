@@ -5,14 +5,11 @@ import game.graphics.ui.MainMenu;
 import game.graphics.ui.NetworkManagerGUI;
 
 public class GameView {
-    public final static int BOARD_SIDE_LENGTH = 10;
-    NetworkManagerGUI netGUI;
-    MainMenu menu;
-    GameController gameController;
+    final static int BOARD_SIDE_LENGTH = 10;
+    private NetworkManagerGUI netGUI;
+    private MainMenu menu;
+    private GameController gameController;
     private GameBoard board;
-
-    // TODO: need to change default exit operation for UI ELEMENTS
-    // so that they only hide and don't spawn additional windows.
 
     public GameView(GameController g) {
         board = new GameBoard(BOARD_SIDE_LENGTH, BOARD_SIDE_LENGTH, this);
@@ -27,7 +24,7 @@ public class GameView {
         board.hitTile(x, y, isEnemy);
     }
 
-    public void showShip(int x, int y, boolean isEnemy) {
+    void showShip(int x, int y, boolean isEnemy) {
         board.displayShip(x, y, isEnemy);
     }
 

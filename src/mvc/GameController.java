@@ -30,6 +30,7 @@ public class GameController {
     public void startGame() {
         displayMessage("Connected.");
         gameModel.startGame();
+        displayMessage("You can now place your battleships\nLeft click - vertically\nRight click - horizontally");
         gameView.getBoard().show();
     }
 
@@ -89,12 +90,13 @@ public class GameController {
         Main.restart();
     }
 
-    boolean sendMessage(Message message) {
+    private boolean sendMessage(Message message) {
         return networkManager.sendMessage(message);
     }
 
     private void attackMyTile(int x, int y) {
         if (gameModel.attackTile(x, y)) {
+            sendMessage(Message.getHitMessage(x, y));
             gameView.getBoard().hitShip(x, y, false);
         } else {
             gameView.getBoard().hitTile(x, y, false);
@@ -107,16 +109,23 @@ public class GameController {
     // no idea for better name+
     private void hitMessageHandler(Message message) {
         if (message.isHit()) {
-            gameModel.lowerEnemyScore();
-            gameModel.setGameState(GameState.MATCH);
-            gameView.getBoard().hitShip(message.getX(), message.getY(), true);
+            if (gameModel.lowerEnemyScore() == 0) {
+                sendMessage(Message.getVictoryMessage());
+                gameModel.setGameState(GameState.END);
+                displayMessage("VICTORY");
+                Main.restart();
+            } else {
+                gameModel.setGameState(GameState.MATCH);
+                gameView.getBoard().hitShip(message.getX(), message.getY(), true);
+            }
         } else {
             gameView.getBoard().hitTile(message.getX(), message.getY(), true);
         }
     }
 
     public void attackEnemyTile(int x, int y) {
-        gameModel.attackEnemyTile(x, y);
+        gameModel.attackEnemyTile();
+        sendMessage(Message.getAttackMessage(x, y));
         gameView.getBoard().hitTile(x, y, true);
     }
 
@@ -132,7 +141,11 @@ public class GameController {
         int length = gameModel.addShip(x, y, angle, isEnemy);
 
         if (length != 0) {
+            if (gameModel.isLastShipBeingAdded())
+                sendMessage(Message.getReadyMessage());
+
             switch (angle) {
+
                 case HORIZONTAL:
                     for (int i = 0; i < length; ++i) {
                         gameView.showShip(x + i, y, isEnemy);

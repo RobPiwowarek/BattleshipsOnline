@@ -10,7 +10,7 @@ public class Message implements Serializable {
     private boolean defeat;
     private boolean isHit;
 
-    public Message(int x, int y, MessageType type, String text, boolean defeat, boolean isHit) {
+    private Message(int x, int y, MessageType type, String text, boolean defeat, boolean isHit) {
         this.x = x;
         this.y = y;
         this.type = type;
@@ -37,6 +37,10 @@ public class Message implements Serializable {
 
     public static Message getAttackMessage(int x, int y) {
         return new Message(x, y, MessageType.ATTACK, "", false, false);
+    }
+
+    public static Message getInterruptMessage() {
+        return new Message(0, 0, MessageType.INTERRUPT, "", false, false);
     }
 
     public int getX() {

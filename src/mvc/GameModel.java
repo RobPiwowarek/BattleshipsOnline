@@ -3,15 +3,12 @@ package mvc;
 import exception.IncorrectGridSizeException;
 import exception.IncorrectShipTypeException;
 import game.GameState;
-import game.Main;
 import game.board.Grid;
 import game.ships.ShipAngle;
 import game.ships.ShipType;
-import network.Message;
 
 public class GameModel {
     private GameState gameState;
-    private GameController gameController;
     private Grid grid;
     private int shipToAdd = 5;
     private int score = 16;
@@ -23,14 +20,6 @@ public class GameModel {
         grid = new Grid(GameView.BOARD_SIDE_LENGTH, GameView.BOARD_SIDE_LENGTH);
 
         gameState = GameState.MENU;
-    }
-
-    public GameController getGameController() {
-        return gameController;
-    }
-
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
     }
 
     public GameModel getGameModel() {
@@ -45,7 +34,7 @@ public class GameModel {
         this.gameState = gameState;
     }
 
-    public int getScore() {
+    int getScore() {
         return score;
     }
 
@@ -61,23 +50,15 @@ public class GameModel {
         this.playerTurn = playerTurn;
     }
 
-    void lowerEnemyScore() {
-        if (--enemyScore == 0) {
-            gameController.sendMessage(Message.getVictoryMessage());
-            gameState = GameState.END;
-
-            gameController.displayMessage("VICTORY");
-            Main.restart();
-        }
-
+    int lowerEnemyScore() {
+        return --enemyScore;
     }
 
     void setEnemyReady(boolean enemyReady) {
         this.enemyReady = enemyReady;
     }
 
-    void attackEnemyTile(int x, int y) {
-        gameController.sendMessage(Message.getAttackMessage(x, y));
+    void attackEnemyTile() {
         gameState = GameState.WAITING;
     }
 
@@ -85,8 +66,6 @@ public class GameModel {
     boolean attackTile(int x, int y) {
         if (grid.attackTile(x, y)) {
             --score;
-
-            gameController.sendMessage(Message.getHitMessage(x, y));
 
             return true;
         } else return false;
@@ -105,10 +84,7 @@ public class GameModel {
                         playerTurn = false;
                     } else
                         playerTurn = true;
-
-                    gameController.sendMessage(Message.getReadyMessage());
                 }
-
                 return shipType.getLength();
             }
 
@@ -135,10 +111,12 @@ public class GameModel {
         }
     }
 
+    boolean isLastShipBeingAdded() {
+        return shipToAdd == 0;
+    }
+
     void startGame() {
         gameState = GameState.START;
-
-        gameController.displayMessage("You can now place your battleships\nLeft click - vertically\nRight click - horizontally");
 
         playerTurn = true;
     }

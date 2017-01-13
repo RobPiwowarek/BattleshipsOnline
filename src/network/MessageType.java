@@ -5,5 +5,6 @@ public enum MessageType {
     HIT,
     GAME_END,
     READY, // has placed ships
-    TEXT
+    TEXT,
+    INTERRUPT,
 }

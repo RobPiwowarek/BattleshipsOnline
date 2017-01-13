@@ -51,7 +51,7 @@ public class Grid {
         this.elements = g.elements;
     }
 
-    public boolean addShip(BattleShip ship, int x, int y, boolean isEnemy) throws GridOutOfBoundsException {
+    boolean addShip(BattleShip ship, int x, int y, boolean isEnemy) throws GridOutOfBoundsException {
         if (x > this.x || x < 0 || y > this.y || y < 0) {
             throw new GridOutOfBoundsException("Incorrect coordinates");
         }
@@ -147,7 +147,7 @@ public class Grid {
     public boolean attackTile(int x, int y) {
         BattleShip ship = elements[y][x].getShip();
 
-        if (ship != null) {
+        if (ship != null && !elements[y][x].isMarked()) {
             ship.takeDamage();
             try {
                 elements[y][x].mark();
@@ -159,19 +159,19 @@ public class Grid {
         } else return false;
     }
 
-    public GridElement getElement(int x, int y) {
+    GridElement getElement(int x, int y) {
         return elements[x][y];
     }
 
-    public void setElement(int x, int y, GridElement g) {
+    void setElement(int x, int y, GridElement g) {
         this.elements[x][y] = g;
     }
 
-    public int getX() {
+    int getX() {
         return this.x;
     }
 
-    public int getY() {
+    int getY() {
         return this.y;
     }
 

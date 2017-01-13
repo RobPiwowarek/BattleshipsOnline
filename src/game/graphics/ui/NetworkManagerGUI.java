@@ -47,8 +47,8 @@ public class NetworkManagerGUI {
 
             System.out.println("isServer: " + isServer + "\nIP: " + ip + "\nPort: " + port);
             gameView.getGameController().createNetworkManager(port, ip, isServer);
-            gameView.getGameController().connect();
             frame.setVisible(false);
+            gameView.getGameController().connect();
             frame.dispose();
         });
 
@@ -82,7 +82,7 @@ public class NetworkManagerGUI {
         this.frame.setVisible(false);
     }
 
-    public void show() {
+    void show() {
         this.frame.setVisible(true);
     }
 
