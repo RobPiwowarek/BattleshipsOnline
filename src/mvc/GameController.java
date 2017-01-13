@@ -28,9 +28,9 @@ public class GameController {
     }
 
     public void startGame() {
-        displayMessage("Connected.");
+        displayPopUpMessage("Connected.");
         gameModel.startGame();
-        displayMessage("You can now place your battleships\nLeft click - vertically\nRight click - horizontally");
+        displayMessage("You can now place your battleships\nLeft click - vertically\nRight click - horizontally\nThe next ship you place will be of length " + gameModel.getLengthOfShipToAdd());
         gameView.getBoard().show();
     }
 
@@ -54,16 +54,18 @@ public class GameController {
     }
 
     private void endGame(Message message) {
-        if (message.isDefeat()) {
-            displayMessage("VICTORY");
-        } else {
-            displayMessage("DEFEAT");
+        if (!message.isDefeat()) {
+            displayPopUpMessage("DEFEAT");
         }
 
         forceRestart();
     }
 
-    public void displayMessage(String message) {
+    public void displayPopUpMessage(String message) {
+        gameView.getBoard().showPopUpMessage(message);
+    }
+
+    private void displayMessage(String message) {
         gameView.getBoard().showMessage(message);
     }
 
@@ -81,8 +83,15 @@ public class GameController {
         }
     }
 
+    public void displayNetworkManagerMessage(String message) {
+        gameView.getNetGUI().setMessage(message);
+    }
+
+    public void closeNetworkManagerGUI() {
+        gameView.getNetGUI().dispose();
+    }
+
     public void connect() {
-        displayMessage("Connecting...");
         networkManager.connect();
     }
 
@@ -112,21 +121,28 @@ public class GameController {
             if (gameModel.lowerEnemyScore() == 0) {
                 sendMessage(Message.getVictoryMessage());
                 gameModel.setGameState(GameState.END);
-                displayMessage("VICTORY");
+                displayPopUpMessage("VICTORY");
                 Main.restart();
             } else {
+                displayMessage("You hit your opponent's ship. You can shoot again. ");
                 gameModel.setGameState(GameState.MATCH);
                 gameView.getBoard().hitShip(message.getX(), message.getY(), true);
             }
         } else {
+            displayMessage("Opponent's turn.");
             gameView.getBoard().hitTile(message.getX(), message.getY(), true);
         }
     }
 
     public void attackEnemyTile(int x, int y) {
-        gameModel.attackEnemyTile();
-        sendMessage(Message.getAttackMessage(x, y));
-        gameView.getBoard().hitTile(x, y, true);
+        if (gameView.isShown(x, y)) return;
+        else {
+            gameModel.attackEnemyTile();
+
+            sendMessage(Message.getAttackMessage(x, y));
+
+            gameView.getBoard().hitTile(x, y, true);
+        }
     }
 
     public GameState getCurrentState() {
@@ -140,7 +156,14 @@ public class GameController {
     public void addShip(int x, int y, ShipAngle angle, boolean isEnemy) {
         int length = gameModel.addShip(x, y, angle, isEnemy);
 
-        if (length != 0) {
+        if (gameModel.getLengthOfShipToAdd() >= 2)
+            displayMessage("The next ship to place has length of " + gameModel.getLengthOfShipToAdd());
+        else {
+            displayMessage("You have placed all ships. ");
+        }
+
+        if (length > 0) {
+
             if (gameModel.isLastShipBeingAdded())
                 sendMessage(Message.getReadyMessage());
 
@@ -159,6 +182,5 @@ public class GameController {
 
             }
         }
-
     }
 }

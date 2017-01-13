@@ -12,7 +12,7 @@ class Tile extends JButton implements MouseListener {
 
     private int x, y;
     private boolean isEnemyTile;
-
+    private boolean isDisplayed;
     private ImageIcon currentIcon;
 
     private GameView gameView;
@@ -30,8 +30,13 @@ class Tile extends JButton implements MouseListener {
         gameView = view;
     }
 
+    boolean isDisplayed() {
+        return isDisplayed;
+    }
+
     void showShip() {
         this.setBackground(Color.black);
+        isDisplayed = true;
     }
 
     void hideShip() {
@@ -40,10 +45,12 @@ class Tile extends JButton implements MouseListener {
 
     void hitTile() {
         this.setBackground(Color.white);
+        isDisplayed = true;
     }
 
     void hitShip() {
         this.setBackground(Color.red);
+        isDisplayed = true;
     }
 
     // Alternatively can be done with icons
@@ -64,7 +71,6 @@ class Tile extends JButton implements MouseListener {
         this.setIcon(null);
     }
 
-    // TODO: block if not your turn or something.
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("CLICKED");

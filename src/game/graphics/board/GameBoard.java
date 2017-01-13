@@ -10,6 +10,7 @@ public class GameBoard {
     private JFrame boardFrame;
     private Tile[][] myTiles;
     private Tile[][] enemyTiles;
+    private JTextArea textArea;
     private GameView gameView;
 
     public GameBoard(int height, int width, GameView view) {
@@ -20,7 +21,7 @@ public class GameBoard {
 
         setupLayout();
 
-        setupPanels(height, width);
+        setupBoxPanel(height, width);
 
         boardFrame.pack();
         boardFrame.setResizable(false);
@@ -32,15 +33,32 @@ public class GameBoard {
         this.boardFrame.getContentPane().setLayout(layout);
     }
 
-    private void setupPanels(int height, int width) {
+    private void setupBoxPanel(int height, int width) {
+        JPanel flowPanel = new JPanel(new FlowLayout());
+        JPanel boxPanel = new JPanel();
+        boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
+
+        textArea = new JTextArea("");
+
+        textArea.setPreferredSize(new Dimension(100, 100));
+
+        setupFlowPanel(flowPanel, height, width);
+
+        boxPanel.add(flowPanel);
+        boxPanel.add(textArea);
+
+        boardFrame.getContentPane().add(boxPanel);
+    }
+
+    private void setupFlowPanel(JPanel flowPanel, int height, int width) {
         JPanel myBoard = new JPanel(new GridLayout(height, width));
         JPanel opponentBoard = new JPanel(new GridLayout(height, width));
 
-        boardFrame.getContentPane().add(myBoard);
-        boardFrame.getContentPane().add(opponentBoard);
-
         setupBoardFields(myBoard, height, width, false);
         setupBoardFields(opponentBoard, height, width, true);
+
+        flowPanel.add(myBoard);
+        flowPanel.add(opponentBoard);
     }
 
     private void setupBoardFields(JPanel board, int height, int width, boolean isEnemy) {
@@ -64,6 +82,10 @@ public class GameBoard {
                 board.add(field);
             }
         }
+    }
+
+    public boolean isDisplayed(int x, int y) {
+        return enemyTiles[y][x].isDisplayed();
     }
 
     public void displayShip(int x, int y, boolean isEnemy) {
@@ -95,8 +117,12 @@ public class GameBoard {
         }
     }
 
-    public void showMessage(String message) {
+    public void showPopUpMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
+    }
+
+    public void showMessage(String message) {
+        textArea.setText(message);
     }
 
     public void show() {

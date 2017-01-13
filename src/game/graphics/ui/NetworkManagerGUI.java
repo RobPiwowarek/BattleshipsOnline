@@ -8,6 +8,7 @@ import java.awt.*;
 public class NetworkManagerGUI {
     private JFrame frame;
     private JTextField ipArea, portArea;
+    private JTextArea textArea;
     private JCheckBox hostArea;
     private GameView gameView;
     private String ip;
@@ -17,7 +18,7 @@ public class NetworkManagerGUI {
     public NetworkManagerGUI(GameView view) {
         gameView = view;
         frame = new JFrame("Connection");
-        frame.setSize(new Dimension(175, 125));
+        frame.setSize(new Dimension(175, 135));
 
         frame.getContentPane().setLayout(new FlowLayout());
         ipArea = setupTextField("127.0.0.1");
@@ -29,10 +30,16 @@ public class NetworkManagerGUI {
 
     private void setupPanel() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
+        JPanel boxPanel = new JPanel();
+        boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
+
+        textArea = new JTextArea("");
 
         hostArea = setupCheckBox("Host", panel);
         setupConnectButton(panel);
-        this.frame.add(panel);
+        boxPanel.add(panel);
+        boxPanel.add(textArea);
+        frame.getContentPane().add(boxPanel);
     }
 
     private void setupConnectButton(JPanel panel) {
@@ -41,24 +48,29 @@ public class NetworkManagerGUI {
         button.addActionListener(e -> {
             System.out.println("Connect Button Pressed");
 
+            button.setEnabled(false);
+
+            textArea.setText("Connecting...");
+
             isServer = hostArea.isSelected();
             ip = ipArea.getText();
             port = Integer.valueOf(portArea.getText());
 
             System.out.println("isServer: " + isServer + "\nIP: " + ip + "\nPort: " + port);
             gameView.getGameController().createNetworkManager(port, ip, isServer);
-            frame.setVisible(false);
             gameView.getGameController().connect();
-            frame.dispose();
         });
 
         panel.add(button);
     }
 
-    private void setupLayoutManager(GridLayout manager) {
-        manager.setVgap(5);
+    public void setMessage(String message) {
+        textArea.setText(message);
+    }
 
-        this.frame.setLayout(manager);
+    public void dispose() {
+        frame.setVisible(false);
+        frame.dispose();
     }
 
     private JTextField setupTextField(String text) {

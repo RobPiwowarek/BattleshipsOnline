@@ -108,7 +108,11 @@ public class NetworkManager {
 
                     isConnected = true;
 
+                    gameController.displayNetworkManagerMessage("Connected.");
+
                     gameController.startGame();
+
+                    gameController.closeNetworkManagerGUI();
 
                     socket.close();
 
@@ -124,12 +128,18 @@ public class NetworkManager {
 
                     isConnected = true;
 
+                    gameController.displayNetworkManagerMessage("Connected.");
+
                     gameController.startGame();
+
+                    gameController.closeNetworkManagerGUI();
                 }
             } catch (UnknownHostException e) {
                 System.err.println("Unknown host");
             } catch (IOException e) {
-                gameController.displayMessage("Connection Timeout. ");
+                gameController.displayNetworkManagerMessage("Connection Timeout. ");
+                gameController.displayPopUpMessage("Connection Timeout. ");
+                gameController.closeNetworkManagerGUI();
                 gameController.forceRestart();
 
                 System.err.println("Could not get I/O for the connection.");

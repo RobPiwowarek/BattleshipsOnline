@@ -28,6 +28,10 @@ public class GameView {
         board.displayShip(x, y, isEnemy);
     }
 
+    boolean isShown(int x, int y) {
+        return board.isDisplayed(x, y);
+    }
+
     public void hideShip(int x, int y, boolean isEnemy) {
         board.hideShip(x, y, isEnemy);
     }

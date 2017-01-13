@@ -147,7 +147,7 @@ public class Grid {
     public boolean attackTile(int x, int y) {
         BattleShip ship = elements[y][x].getShip();
 
-        if (ship != null && !elements[y][x].isMarked()) {
+        if (ship != null) {
             ship.takeDamage();
             try {
                 elements[y][x].mark();
@@ -157,6 +157,10 @@ public class Grid {
             }
             return true;
         } else return false;
+    }
+
+    public boolean isMarked(int x, int y) {
+        return elements[y][x].isMarked();
     }
 
     GridElement getElement(int x, int y) {

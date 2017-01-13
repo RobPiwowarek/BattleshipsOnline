@@ -22,6 +22,14 @@ public class GameModel {
         gameState = GameState.MENU;
     }
 
+    int getLengthOfShipToAdd() {
+        if (shipToAdd >= 2) {
+            return shipToAdd;
+        } else if (shipToAdd == 1) return 2;
+        else
+            return 0;
+    }
+
     public GameModel getGameModel() {
         return this;
     }
@@ -65,7 +73,8 @@ public class GameModel {
     // return true if ship was hit
     boolean attackTile(int x, int y) {
         if (grid.attackTile(x, y)) {
-            --score;
+            if (!grid.isMarked(x, y))
+                --score;
 
             return true;
         } else return false;
