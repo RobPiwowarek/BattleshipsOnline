@@ -104,10 +104,11 @@ public class GameController {
     }
 
     private void attackMyTile(int x, int y) {
-        if (gameModel.attackTile(x, y)) {
+        if (gameModel.attackMyTile(x, y)) {
             sendMessage(Message.getHitMessage(x, y));
             gameView.getBoard().hitShip(x, y, false);
         } else {
+            sendMessage(Message.getMissMessage(x, y));
             gameView.getBoard().hitTile(x, y, false);
             gameModel.setPlayerTurn(true);
             gameModel.setGameState(GameState.MATCH);

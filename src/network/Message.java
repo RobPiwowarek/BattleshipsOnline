@@ -35,6 +35,10 @@ public class Message implements Serializable {
         return new Message(x, y, MessageType.HIT, "", false, true);
     }
 
+    public static Message getMissMessage(int x, int y) {
+        return new Message(x, y, MessageType.HIT, "", false, false);
+    }
+
     public static Message getAttackMessage(int x, int y) {
         return new Message(x, y, MessageType.ATTACK, "", false, false);
     }

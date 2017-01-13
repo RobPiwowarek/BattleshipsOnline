@@ -1,23 +1,20 @@
 package game.board;
 
-import exception.AlreadyMarkedException;
 import game.ships.BattleShip;
 
 class GridElement {
     private boolean marked = false;
     private BattleShip ship;
 
-    public GridElement() {
+    GridElement() {
         this.ship = null;
     }
 
-    public GridElement(BattleShip ship) {
+    GridElement(BattleShip ship) {
         this.ship = ship;
     }
 
-    public void mark() throws AlreadyMarkedException {
-        if (this.marked) throw new AlreadyMarkedException("");
-
+    void mark() {
         this.marked = true;
 
         if (this.ship != null) {
@@ -25,15 +22,15 @@ class GridElement {
         }
     }
 
-    public BattleShip getShip() {
+    BattleShip getShip() {
         return ship;
     }
 
-    public void setShip(BattleShip ship) {
+    void setShip(BattleShip ship) {
         this.ship = ship;
     }
 
-    public boolean isMarked() {
+    boolean isMarked() {
         return this.marked;
     }
 

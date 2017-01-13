@@ -16,7 +16,7 @@ public class MainMenu {
 
         menuFrame = new JFrame("game.Main menu");
 
-        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setupLayoutManager();
 
@@ -110,14 +110,12 @@ public class MainMenu {
         author.addActionListener(e -> {
             System.out.println("Author pressed");
 
-            JOptionPane.showMessageDialog(null, "Robert Piwowarek\nPW\nWEITI INFROMATYKA 3I2");
+            JOptionPane.showMessageDialog(null, "Robert Piwowarek\nPW\nWEITI INFORMATYKA 3I2");
         });
     }
 
     private void setupExitButton(JButton exit) {
-        exit.addActionListener(e -> {
-            menuFrame.dispatchEvent(new WindowEvent(menuFrame, WindowEvent.WINDOW_CLOSING));
-        });
+        exit.addActionListener(e -> menuFrame.dispatchEvent(new WindowEvent(menuFrame, WindowEvent.WINDOW_CLOSING)));
     }
 
     public void dispose() {

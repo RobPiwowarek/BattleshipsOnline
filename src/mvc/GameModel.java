@@ -71,10 +71,9 @@ public class GameModel {
     }
 
     // return true if ship was hit
-    boolean attackTile(int x, int y) {
+    boolean attackMyTile(int x, int y) {
         if (grid.attackTile(x, y)) {
-            if (!grid.isMarked(x, y))
-                --score;
+            --score;
 
             return true;
         } else return false;
